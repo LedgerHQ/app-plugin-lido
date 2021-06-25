@@ -1,0 +1,33 @@
+name: Compilation & tests
+
+on:
+  push:
+    branches:
+    - main
+  pull_request:
+    branches:
+    - main
+
+jobs:
+  job_build_debug:
+    name: Build debug
+    runs-on: ubuntu-latest
+
+    container:
+      image: ghcr.io/ledgerhq/ledger-app-builder/ledger-app-builder:2.0.0-1
+
+    steps:
+      - name: Clone
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
+
+      - name: Build Lido plugin
+        run: |
+          make 
+
+      - name: Upload Lido binary
+        uses: actions/upload-artifact@v2
+        with:
+          name: lido-app-plugin-debug
+          path: bin
