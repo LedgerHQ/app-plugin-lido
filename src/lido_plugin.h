@@ -13,13 +13,10 @@
 
 #define PLUGIN_NAME "Lido"
 
-#define TOKEN_SENT_FOUND     1
-#define TOKEN_RECEIVED_FOUND 1 << 1
-
-#define STETH_TICKER "stETH"
+#define STETH_TICKER   "stETH"
 #define STETH_DECIMALS WEI_TO_ETHER
 
-#define WSTETH_TICKER "wstETH"
+#define WSTETH_TICKER   "wstETH"
 #define WSTETH_DECIMALS WEI_TO_ETHER
 
 typedef enum {
@@ -55,7 +52,7 @@ typedef struct lido_parameters_t {
     uint8_t selectorIndex;
 } lido_parameters_t;
 
-_Static_assert(sizeof(lido_parameters_t) <= 5 * 32, "failed");
+_Static_assert(sizeof(lido_parameters_t) <= 5 * 32, "Structure of parameters too big.");
 
 void handle_provide_parameter(void *parameters);
 void handle_query_contract_ui(void *parameters);

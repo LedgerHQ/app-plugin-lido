@@ -64,7 +64,9 @@ static void set_send_ui(ethQueryContractUI_t *msg, lido_parameters_t *context) {
 // Set UI for "Beneficiary" screen.
 static void set_referral_ui(ethQueryContractUI_t *msg, lido_parameters_t *context) {
     if (context->selectorIndex != STAKE) {
-        PRINTF("Invalid selector index (%d) for screen number %d\n", context->selectorIndex, msg->screenIndex);
+        PRINTF("Invalid selector index (%d) for screen number %d\n",
+               context->selectorIndex,
+               msg->screenIndex);
         return;
     }
     strncpy(msg->title, "Referrer", msg->titleLength);
@@ -80,7 +82,6 @@ static void set_referral_ui(ethQueryContractUI_t *msg, lido_parameters_t *contex
                                   &chainConfig);
 }
 
-
 void handle_query_contract_ui(void *parameters) {
     ethQueryContractUI_t *msg = (ethQueryContractUI_t *) parameters;
     lido_parameters_t *context = (lido_parameters_t *) msg->pluginContext;
@@ -90,7 +91,7 @@ void handle_query_contract_ui(void *parameters) {
     msg->result = ETH_PLUGIN_RESULT_OK;
 
     switch (msg->screenIndex) {
-        case 1: 
+        case 1:
             set_send_ui(msg, context);
             break;
         case 2:

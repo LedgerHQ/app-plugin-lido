@@ -19,8 +19,8 @@
 #include <stdint.h>
 #include <string.h>
 
-#include "os.h"
 #include "cx.h"
+#include "os.h"
 
 #include "lido_plugin.h"
 

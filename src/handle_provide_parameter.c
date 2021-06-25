@@ -2,8 +2,7 @@
 
 // Store the amount sent in the form of a string, without any ticker or
 // decimals. These will be added when displaying.
-static void handle_amount_sent(ethPluginProvideParameter_t *msg,
-                               lido_parameters_t *context) {
+static void handle_amount_sent(ethPluginProvideParameter_t *msg, lido_parameters_t *context) {
     memset(context->amount_sent, 0, sizeof(context->amount_sent));
 
     // Convert to string.
@@ -16,8 +15,7 @@ static void handle_amount_sent(ethPluginProvideParameter_t *msg,
     PRINTF("AMOUNT SENT: %s\n", context->amount_sent);
 }
 
-static void handle_referral(ethPluginProvideParameter_t *msg,
-                               lido_parameters_t *context) {
+static void handle_referral(ethPluginProvideParameter_t *msg, lido_parameters_t *context) {
     memset(context->referral, 0, sizeof(context->referral));
     memcpy(context->referral,
            &msg->parameter[PARAMETER_LENGTH - ADDRESS_LENGTH],
@@ -42,7 +40,7 @@ static void handle_wrap(ethPluginProvideParameter_t *msg, lido_parameters_t *con
     // ABI for wrap is: wrap(uint256 amount)
     // ABI for unwrap is: unwrap(uint256 amount)
     switch (context->next_param) {
-        case TOKEN_RECEIVED: // fromToken
+        case TOKEN_RECEIVED:  // fromToken
             handle_amount_sent(msg, context);
             context->next_param = NONE;
             break;
