@@ -29,6 +29,7 @@ static void handle_stake(ethPluginProvideParameter_t *msg, lido_parameters_t *co
         case REFERRAL:
             handle_referral(msg, context);
             context->next_param = NONE;
+            break;
         default:
             PRINTF("Param not supported\n");
             msg->result = ETH_PLUGIN_RESULT_ERROR;

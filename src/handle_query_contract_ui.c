@@ -91,10 +91,10 @@ void handle_query_contract_ui(void *parameters) {
     msg->result = ETH_PLUGIN_RESULT_OK;
 
     switch (msg->screenIndex) {
-        case 1:
+        case 0:
             set_send_ui(msg, context);
             break;
-        case 2:
+        case 1:
             set_referral_ui(msg, context);
             break;
         default:
