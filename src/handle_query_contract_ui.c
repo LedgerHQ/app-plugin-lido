@@ -27,7 +27,12 @@ static void set_send_ui(ethQueryContractUI_t *msg, lido_parameters_t *context) {
             return;
     }
 
-    amountToString(context->amount_sent, context->amount_length, decimals, ticker, msg->msg, msg->msgLength);
+    amountToString(context->amount_sent,
+                   context->amount_length,
+                   decimals,
+                   ticker,
+                   msg->msg,
+                   msg->msgLength);
 }
 
 // Set UI for "Beneficiary" screen.

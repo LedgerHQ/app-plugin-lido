@@ -10,9 +10,7 @@ static void handle_amount_sent(ethPluginProvideParameter_t *msg, lido_parameters
 
 static void handle_referral(ethPluginProvideParameter_t *msg, lido_parameters_t *context) {
     memset(context->referral, 0, sizeof(context->referral));
-    memcpy(context->referral,
-           &msg->parameter[PARAMETER_LENGTH - ADDRESS_LENGTH],
-           ADDRESS_LENGTH);
+    memcpy(context->referral, &msg->parameter[PARAMETER_LENGTH - ADDRESS_LENGTH], ADDRESS_LENGTH);
     PRINTF("REFERRAL: %.*H\n", ADDRESS_LENGTH, context->referral);
 }
 
@@ -33,7 +31,9 @@ static void handle_stake(ethPluginProvideParameter_t *msg, lido_parameters_t *co
 // Similar to handle_amount_sent but takes the amount from the transaction data (in ETH).
 static void copy_eth_amount(ethPluginProvideParameter_t *msg, lido_parameters_t *context) {
     memset(context->amount_sent, 0, sizeof(context->amount_sent));
-    memcpy(context->amount_sent, (uint8_t *)&msg->pluginSharedRO->txContent->value.value, msg->pluginSharedRO->txContent->value.length);
+    memcpy(context->amount_sent,
+           (uint8_t *) &msg->pluginSharedRO->txContent->value.value,
+           msg->pluginSharedRO->txContent->value.length);
     context->amount_length = msg->pluginSharedRO->txContent->value.length;
 }
 
