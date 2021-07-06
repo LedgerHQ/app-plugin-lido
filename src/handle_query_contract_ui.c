@@ -34,7 +34,7 @@ static void set_send_ui(ethQueryContractUI_t *msg, lido_parameters_t *context) {
         case STAKE:
             strncpy(msg->title, "Stake", msg->titleLength);
             decimals = WEI_TO_ETHER;
-            ticker = "ETH";
+            ticker = "ETH ";
             break;
         case UNWRAP:
             strncpy(msg->title, "Unwrap", msg->titleLength);

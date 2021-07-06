@@ -37,6 +37,14 @@ static void handle_stake(ethPluginProvideParameter_t *msg, lido_parameters_t *co
     }
 }
 
+// Similar to handle_amount_sent but takes the amount from the transaction data (in ETH).
+static void copy_eth_amount(ethPluginProvideParameter_t *msg, lido_parameters_t *context) {
+    uint8_t *eth_amount = msg->pluginSharedRO->txContent->value.value;
+    uint8_t eth_amount_len = msg->pluginSharedRO->txContent->value.length;
+
+    amountToString(eth_amount, eth_amount_len, 0, "", (char *)context->amount_sent, sizeof(context->amount_sent));
+}
+
 static void handle_wrap(ethPluginProvideParameter_t *msg, lido_parameters_t *context) {
     // ABI for wrap is: wrap(uint256 amount)
     // ABI for unwrap is: unwrap(uint256 amount)
@@ -65,6 +73,7 @@ void handle_provide_parameter(void *parameters) {
     switch (context->selectorIndex) {
         case STAKE:
             handle_stake(msg, context);
+            copy_eth_amount(msg, context);
             break;
         case UNWRAP:
         case WRAP:
