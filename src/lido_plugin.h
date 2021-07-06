@@ -26,10 +26,7 @@ typedef enum {
 } lidoSelector_t;
 
 typedef enum {
-    TOKEN_SENT,
-    TOKEN_RECEIVED,
     AMOUNT_SENT,
-    AMOUNT_RECEIVED,
     REFERRAL,
     NONE,
 } selectorField;
@@ -60,5 +57,3 @@ void handle_init_contract(void *parameters);
 void handle_finalize(void *parameters);
 void handle_provide_token(void *parameters);
 void handle_query_contract_id(void *parameters);
-
-bool eth_address_is_zero(char *address);

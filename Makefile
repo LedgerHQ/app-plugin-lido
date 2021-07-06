@@ -81,7 +81,7 @@ ifneq ($(DEBUG),0)
 
         ifeq ($(DEBUG),10)
                 $(warning Using semihosted PRINTF. Only run with speculos!)
-                CFLAGS    += -include src/debug/debug.h
+                CFLAGS    += -include src/dbg/debug.h
                 DEFINES   += HAVE_PRINTF PRINTF=semihosted_printf
         else
                 ifeq ($(TARGET_NAME),TARGET_NANOX)

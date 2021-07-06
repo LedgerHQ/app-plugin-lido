@@ -6,7 +6,7 @@ void handle_finalize(void *parameters) {
     PRINTF("handle finalize\n");
     if (context->valid) {
         msg->numScreens = 1;
-        if (!eth_address_is_zero(context->referral)) {
+        if (!allzeroes(context->referral, sizeof(context->referral))) {
             // There is a referral, we will display an extra screen.
             msg->numScreens += 1;
         }

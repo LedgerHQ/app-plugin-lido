@@ -1,7 +1,7 @@
 #include "lido_plugin.h"
 
 // Store the amount sent in the form of a string, without any ticker or
-// decimals. These will be added when displaying.
+// decimals. These will be added right before display.
 static void handle_amount_sent(ethPluginProvideParameter_t *msg, lido_parameters_t *context) {
     memset(context->amount_sent, 0, sizeof(context->amount_sent));
 
@@ -41,7 +41,7 @@ static void handle_wrap(ethPluginProvideParameter_t *msg, lido_parameters_t *con
     // ABI for wrap is: wrap(uint256 amount)
     // ABI for unwrap is: unwrap(uint256 amount)
     switch (context->next_param) {
-        case TOKEN_RECEIVED:  // fromToken
+        case AMOUNT_SENT:
             handle_amount_sent(msg, context);
             context->next_param = NONE;
             break;
