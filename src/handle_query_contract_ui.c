@@ -1,30 +1,5 @@
 #include "lido_plugin.h"
 
-// Prepend `dest` with `ticker`.
-// Dest must be big enough to hold `ticker` + `dest` + `\0`.
-static void prepend_ticker(char *dest, uint8_t destsize, char *ticker) {
-    if (dest == NULL || ticker == NULL) {
-        THROW(0x6503);
-    }
-    uint8_t ticker_len = strlen(ticker);
-    uint8_t dest_len = strlen(dest);
-
-    if (dest_len + ticker_len >= destsize) {
-        THROW(0x6503);
-    }
-
-    // Right shift the string by `ticker_len` bytes.
-    while (dest_len != 0) {
-        dest[dest_len + ticker_len] = dest[dest_len];  // First iteration will copy the \0
-        dest_len--;
-    }
-    // Don't forget to null terminate the string.
-    dest[ticker_len] = dest[0];
-
-    // Copy the ticker to the beginning of the string.
-    memcpy(dest, ticker, ticker_len);
-}
-
 // Set UI for the "Send" screen.
 static void set_send_ui(ethQueryContractUI_t *msg, lido_parameters_t *context) {
     uint8_t decimals = 0;
@@ -52,13 +27,7 @@ static void set_send_ui(ethQueryContractUI_t *msg, lido_parameters_t *context) {
             return;
     }
 
-    adjustDecimals((char *) context->amount_sent,
-                   strnlen((char *) context->amount_sent, sizeof(context->amount_sent)),
-                   msg->msg,
-                   msg->msgLength,
-                   decimals);
-
-    prepend_ticker(msg->msg, msg->msgLength, ticker);
+    amountToString(context->amount_sent, context->amount_length, decimals, ticker, msg->msg, msg->msgLength);
 }
 
 // Set UI for "Beneficiary" screen.

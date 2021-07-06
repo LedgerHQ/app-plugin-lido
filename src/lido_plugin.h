@@ -43,8 +43,9 @@ extern const uint8_t *const LIDO_SELECTORS[NUM_LIDO_SELECTORS];
 
 // Shared global memory with Ethereum app. Must be at most 5 * 32 bytes.
 typedef struct lido_parameters_t {
-    uint8_t amount_sent[MAXIMUM_STR_SIZE_OF_INT256]; // This could be reduced down to 20 bytes if conversion to string was done in ETH_QUERY_CONTRAT_UI in ETH_QUERY_CONTRAT_UI
+    uint8_t amount_sent[INT256_LENGTH]; // This could be reduced down to 20 bytes if conversion to string was done in ETH_QUERY_CONTRAT_UI in ETH_QUERY_CONTRAT_UI
     char referral[ADDRESS_LENGTH];
+    uint8_t amount_length;
 
     uint8_t next_param;
     uint8_t valid;

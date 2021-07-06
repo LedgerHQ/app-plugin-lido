@@ -4,27 +4,20 @@
 // decimals. These will be added right before display.
 static void handle_amount_sent(ethPluginProvideParameter_t *msg, lido_parameters_t *context) {
     memset(context->amount_sent, 0, sizeof(context->amount_sent));
-
-    // Convert to string.
-    amountToString(msg->parameter,
-                   PARAMETER_LENGTH,
-                   0,
-                   "",
-                   (char *) context->amount_sent,
-                   sizeof(context->amount_sent));
-    PRINTF("AMOUNT SENT: %s\n", context->amount_sent);
+    memcpy(context->amount_sent, msg->parameter, PARAMETER_LENGTH);
+    context->amount_length = PARAMETER_LENGTH;
 }
 
 static void handle_referral(ethPluginProvideParameter_t *msg, lido_parameters_t *context) {
     memset(context->referral, 0, sizeof(context->referral));
     memcpy(context->referral,
            &msg->parameter[PARAMETER_LENGTH - ADDRESS_LENGTH],
-           sizeof(context->referral));
+           ADDRESS_LENGTH);
     PRINTF("REFERRAL: %.*H\n", ADDRESS_LENGTH, context->referral);
 }
 
 static void handle_stake(ethPluginProvideParameter_t *msg, lido_parameters_t *context) {
-    // Describe ABI submit(address _referral)
+    // ABI for stake is: submit(address referral)
     switch (context->next_param) {
         case REFERRAL:
             handle_referral(msg, context);
@@ -39,10 +32,9 @@ static void handle_stake(ethPluginProvideParameter_t *msg, lido_parameters_t *co
 
 // Similar to handle_amount_sent but takes the amount from the transaction data (in ETH).
 static void copy_eth_amount(ethPluginProvideParameter_t *msg, lido_parameters_t *context) {
-    uint8_t *eth_amount = msg->pluginSharedRO->txContent->value.value;
-    uint8_t eth_amount_len = msg->pluginSharedRO->txContent->value.length;
-
-    amountToString(eth_amount, eth_amount_len, 0, "", (char *)context->amount_sent, sizeof(context->amount_sent));
+    memset(context->amount_sent, 0, sizeof(context->amount_sent));
+    memcpy(context->amount_sent, (uint8_t *)&msg->pluginSharedRO->txContent->value.value, msg->pluginSharedRO->txContent->value.length);
+    context->amount_length = msg->pluginSharedRO->txContent->value.length;
 }
 
 static void handle_wrap(ethPluginProvideParameter_t *msg, lido_parameters_t *context) {
@@ -74,10 +66,16 @@ void handle_provide_parameter(void *parameters) {
         case STAKE:
             handle_stake(msg, context);
             copy_eth_amount(msg, context);
+
+            // Should be done parsing.
+            context->next_param = NONE;
             break;
         case UNWRAP:
         case WRAP:
             handle_wrap(msg, context);
+
+            // Should be done parsing.
+            context->next_param = NONE;
             break;
         default:
             PRINTF("Selector Index %d not supported\n", context->selectorIndex);
