@@ -4,17 +4,17 @@ void handle_query_contract_id(void *parameters) {
     ethQueryContractID_t *msg = (ethQueryContractID_t *) parameters;
     lido_parameters_t *context = (lido_parameters_t *) msg->pluginContext;
 
-    strncpy(msg->name, PLUGIN_NAME, msg->nameLength);
+    strlcpy(msg->name, PLUGIN_NAME, msg->nameLength);
 
     switch (context->selectorIndex) {
         case STAKE:
-            strncpy(msg->version, "Stake", msg->versionLength);
+            strlcpy(msg->version, "Stake", msg->versionLength);
             break;
         case WRAP:
-            strncpy(msg->version, "Wrap", msg->versionLength);
+            strlcpy(msg->version, "Wrap", msg->versionLength);
             break;
         case UNWRAP:
-            strncpy(msg->version, "Unwrap", msg->versionLength);
+            strlcpy(msg->version, "Unwrap", msg->versionLength);
             break;
         default:
             PRINTF("Selector Index :%d not supported\n", context->selectorIndex);

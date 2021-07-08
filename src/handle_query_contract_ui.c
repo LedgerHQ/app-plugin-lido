@@ -7,17 +7,17 @@ static void set_send_ui(ethQueryContractUI_t *msg, lido_parameters_t *context) {
 
     switch (context->selectorIndex) {
         case STAKE:
-            strncpy(msg->title, "Stake", msg->titleLength);
+            strlcpy(msg->title, "Stake", msg->titleLength);
             decimals = WEI_TO_ETHER;
             ticker = "ETH ";
             break;
         case UNWRAP:
-            strncpy(msg->title, "Unwrap", msg->titleLength);
+            strlcpy(msg->title, "Unwrap", msg->titleLength);
             decimals = WSTETH_DECIMALS;
             ticker = WSTETH_TICKER;
             break;
         case WRAP:
-            strncpy(msg->title, "Wrap", msg->titleLength);
+            strlcpy(msg->title, "Wrap", msg->titleLength);
             decimals = STETH_DECIMALS;
             ticker = STETH_TICKER;
             break;
@@ -43,7 +43,7 @@ static void set_referral_ui(ethQueryContractUI_t *msg, lido_parameters_t *contex
                msg->screenIndex);
         return;
     }
-    strncpy(msg->title, "Referrer", msg->titleLength);
+    strlcpy(msg->title, "Referrer", msg->titleLength);
 
     msg->msg[0] = '0';
     msg->msg[1] = 'x';

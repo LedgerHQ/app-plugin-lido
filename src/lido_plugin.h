@@ -2,7 +2,7 @@
 
 #include "eth_internals.h"
 #include "eth_plugin_interface.h"
-#include <string.h>
+#include <bsd/string.h>
 
 #define PARAMETER_LENGTH 32
 #define SELECTOR_SIZE    4
