@@ -1,7 +1,5 @@
-#include <stdio.h>
-#include <stdarg.h>
-#include <stdint.h>
 #include "printf.h"
+#include <stdint.h>
 
 void debug_write(const char *buf) {
     asm volatile(
