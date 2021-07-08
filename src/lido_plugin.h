@@ -3,8 +3,6 @@
 #include "eth_internals.h"
 #include "eth_plugin_interface.h"
 #include <stdbool.h>
-#include <stdint.h>
-#include <stddef.h>
 
 #define PARAMETER_LENGTH 32
 #define SELECTOR_SIZE    4
