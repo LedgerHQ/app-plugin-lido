@@ -114,7 +114,7 @@ endif
 
 CC       := $(CLANGPATH)clang
 
-CFLAGS   += -O3 -Os
+CFLAGS   += -O3 -Os -I/usr/include
 
 AS     := $(GCCPATH)arm-none-eabi-gcc
 
