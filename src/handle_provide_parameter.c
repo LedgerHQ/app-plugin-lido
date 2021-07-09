@@ -8,17 +8,11 @@ static void handle_amount_sent(ethPluginProvideParameter_t *msg, lido_parameters
     context->amount_length = PARAMETER_LENGTH;
 }
 
-static void handle_referral(ethPluginProvideParameter_t *msg, lido_parameters_t *context) {
-    memset(context->referral, 0, sizeof(context->referral));
-    memcpy(context->referral, &msg->parameter[PARAMETER_LENGTH - ADDRESS_LENGTH], ADDRESS_LENGTH);
-    PRINTF("REFERRAL: %.*H\n", ADDRESS_LENGTH, context->referral);
-}
-
 static void handle_stake(ethPluginProvideParameter_t *msg, lido_parameters_t *context) {
     // ABI for stake is: submit(address referral)
     switch (context->next_param) {
         case REFERRAL:
-            handle_referral(msg, context);
+            // Should be done parsing
             context->next_param = NONE;
             break;
         default:
@@ -43,6 +37,7 @@ static void handle_wrap(ethPluginProvideParameter_t *msg, lido_parameters_t *con
     switch (context->next_param) {
         case AMOUNT_SENT:
             handle_amount_sent(msg, context);
+            // Should be done parsing
             context->next_param = NONE;
             break;
         default:
@@ -66,16 +61,10 @@ void handle_provide_parameter(void *parameters) {
         case STAKE:
             handle_stake(msg, context);
             copy_eth_amount(msg, context);
-
-            // Should be done parsing.
-            context->next_param = NONE;
             break;
         case UNWRAP:
         case WRAP:
             handle_wrap(msg, context);
-
-            // Should be done parsing.
-            context->next_param = NONE;
             break;
         default:
             PRINTF("Selector Index %d not supported\n", context->selectorIndex);

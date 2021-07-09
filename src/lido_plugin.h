@@ -46,7 +46,6 @@ typedef struct lido_parameters_t {
     uint8_t amount_sent[INT256_LENGTH];  // This could be reduced down to 20 bytes if conversion to
                                          // string was done in ETH_QUERY_CONTRAT_UI in
                                          // ETH_QUERY_CONTRAT_UI
-    char referral[ADDRESS_LENGTH];
     uint8_t amount_length;
 
     uint8_t next_param;

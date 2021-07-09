@@ -6,10 +6,6 @@ void handle_finalize(void *parameters) {
     PRINTF("handle finalize\n");
     if (context->valid) {
         msg->numScreens = 1;
-        if (!allzeroes(context->referral, sizeof(context->referral))) {
-            // There is a referral, we will display an extra screen.
-            msg->numScreens += 1;
-        }
         msg->uiType = ETH_UI_TYPE_GENERIC;
         msg->result = ETH_PLUGIN_RESULT_OK;
     } else {
