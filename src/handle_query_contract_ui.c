@@ -6,7 +6,7 @@ static void set_send_ui(ethQueryContractUI_t *msg, lido_parameters_t *context) {
     char *ticker;
 
     switch (context->selectorIndex) {
-        case STAKE:
+        case SUBMIT:
             strlcpy(msg->title, "Stake", msg->titleLength);
             decimals = WEI_TO_ETHER;
             ticker = "ETH ";
@@ -43,13 +43,10 @@ void handle_query_contract_ui(void *parameters) {
     memset(msg->msg, 0, msg->msgLength);
     msg->result = ETH_PLUGIN_RESULT_OK;
 
-    switch (msg->screenIndex) {
-        case 0:
-            set_send_ui(msg, context);
-            break;
-        default:
-            PRINTF("Screen %d not supported\n", msg->screenIndex);
-            msg->result = ETH_PLUGIN_RESULT_ERROR;
-            break;
+    if (msg->screenIndex == 0) {
+        set_send_ui(msg, context);
+    } else {
+        PRINTF("Screen %d not supported\n", msg->screenIndex);
+        msg->result = ETH_PLUGIN_RESULT_ERROR;
     }
 }

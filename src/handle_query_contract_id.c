@@ -7,7 +7,7 @@ void handle_query_contract_id(void *parameters) {
     strlcpy(msg->name, PLUGIN_NAME, msg->nameLength);
 
     switch (context->selectorIndex) {
-        case STAKE:
+        case SUBMIT:
             strlcpy(msg->version, "Stake", msg->versionLength);
             break;
         case WRAP:

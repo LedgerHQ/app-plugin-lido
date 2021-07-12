@@ -8,17 +8,14 @@ static void handle_amount_sent(ethPluginProvideParameter_t *msg, lido_parameters
     context->amount_length = PARAMETER_LENGTH;
 }
 
-static void handle_stake(ethPluginProvideParameter_t *msg, lido_parameters_t *context) {
-    // ABI for stake is: submit(address referral)
-    switch (context->next_param) {
-        case REFERRAL:
-            // Should be done parsing
-            context->next_param = NONE;
-            break;
-        default:
-            PRINTF("Param not supported\n");
-            msg->result = ETH_PLUGIN_RESULT_ERROR;
-            break;
+static void handle_submit(ethPluginProvideParameter_t *msg, lido_parameters_t *context) {
+    // ABI for submit is: submit(address referral)
+    if (context->next_param == REFERRAL) {
+        // Should be done parsing
+        context->next_param = NONE;
+    } else {
+        PRINTF("Param not supported\n");
+        msg->result = ETH_PLUGIN_RESULT_ERROR;
     }
 }
 
@@ -26,7 +23,7 @@ static void handle_stake(ethPluginProvideParameter_t *msg, lido_parameters_t *co
 static void copy_eth_amount(ethPluginProvideParameter_t *msg, lido_parameters_t *context) {
     memset(context->amount_sent, 0, sizeof(context->amount_sent));
     memcpy(context->amount_sent,
-           (uint8_t *) &msg->pluginSharedRO->txContent->value.value,
+           &msg->pluginSharedRO->txContent->value.value,
            msg->pluginSharedRO->txContent->value.length);
     context->amount_length = msg->pluginSharedRO->txContent->value.length;
 }
@@ -58,8 +55,8 @@ void handle_provide_parameter(void *parameters) {
     msg->result = ETH_PLUGIN_RESULT_OK;
 
     switch (context->selectorIndex) {
-        case STAKE:
-            handle_stake(msg, context);
+        case SUBMIT:
+            handle_submit(msg, context);
             copy_eth_amount(msg, context);
             break;
         case UNWRAP:
