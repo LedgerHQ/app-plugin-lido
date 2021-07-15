@@ -1,13 +1,10 @@
 #pragma once
 
-#include "eth_internals.h"
 #include "eth_plugin_interface.h"
 #include <stdbool.h>
 
 #define PARAMETER_LENGTH 32
 #define SELECTOR_SIZE    4
-
-#define RUN_APPLICATION 1
 
 #define NUM_LIDO_SELECTORS 3
 
@@ -20,7 +17,7 @@
 #define WSTETH_DECIMALS WEI_TO_ETHER
 
 typedef enum {
-    STAKE,
+    SUBMIT,
     WRAP,
     UNWRAP,
 } lidoSelector_t;
@@ -47,10 +44,9 @@ typedef struct lido_parameters_t {
                                          // string was done in ETH_QUERY_CONTRAT_UI in
                                          // ETH_QUERY_CONTRAT_UI
     uint8_t amount_length;
-
     uint8_t next_param;
-    uint8_t valid;
     uint8_t selectorIndex;
+    bool valid;
 } lido_parameters_t;
 
 _Static_assert(sizeof(lido_parameters_t) <= 5 * 32, "Structure of parameters too big.");

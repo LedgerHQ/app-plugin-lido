@@ -16,11 +16,9 @@ void handle_init_contract(void *parameters) {
 
     lido_parameters_t *context = (lido_parameters_t *) msg->pluginContext;
     memset(context, 0, sizeof(*context));
-    context->valid = 1;
 
-    uint8_t i;
-    for (i = 0; i < NUM_LIDO_SELECTORS; i++) {
-        if (memcmp((uint8_t *) PIC(LIDO_SELECTORS[i]), msg->selector, SELECTOR_SIZE) == 0) {
+    for (int i = 0; i < NUM_LIDO_SELECTORS; i++) {
+        if (memcmp(PIC(LIDO_SELECTORS[i]), msg->selector, SELECTOR_SIZE) == 0) {
             context->selectorIndex = i;
             break;
         }
@@ -28,7 +26,7 @@ void handle_init_contract(void *parameters) {
 
     // Set `next_param` to be the first field we expect to parse.
     switch (context->selectorIndex) {
-        case STAKE:
+        case SUBMIT:
             context->next_param = REFERRAL;
             break;
         case UNWRAP:
@@ -41,5 +39,6 @@ void handle_init_contract(void *parameters) {
             return;
     }
 
+    context->valid = true;
     msg->result = ETH_PLUGIN_RESULT_OK;
 }
