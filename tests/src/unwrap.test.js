@@ -1,26 +1,22 @@
 import "core-js/stable";
 import "regenerator-runtime/runtime";
 import Eth from "@ledgerhq/hw-app-eth";
-import { byContractAddress } from "@ledgerhq/hw-app-eth/erc20";
 import Zemu from "@zondax/zemu";
-import { TransportStatusError } from "@ledgerhq/errors";
 import { expect } from "../jest";
 
-const {NANOS_ETH_ELF_PATH, NANOX_ETH_ELF_PATH, NANOS_LIDO_LIB, NANOX_LIDO_LIB, sim_options_nanos, sim_options_nanox, TIMEOUT} = require("generic.js");
+const {NANOS_ETH_ELF_PATH, NANOX_ETH_ELF_PATH, NANOS_LIDO_LIB, NANOX_LIDO_LIB, sim_options_nanos, sim_options_nanox, TIMEOUT, getTmpPath} = require("generic.js");
 
 const ORIGINAL_SNAPSHOT_PATH_PREFIX = "snapshots/unwrap/";
-const SNAPSHOT_PATH_PREFIX = "snapshots/unwrap/";
 
 const ORIGINAL_SNAPSHOT_PATH_NANOS = ORIGINAL_SNAPSHOT_PATH_PREFIX + "nanos/";
 const ORIGINAL_SNAPSHOT_PATH_NANOX = ORIGINAL_SNAPSHOT_PATH_PREFIX + "nanox/";
-
-const SNAPSHOT_PATH_NANOS = SNAPSHOT_PATH_PREFIX + "nanos/";
-const SNAPSHOT_PATH_NANOX = SNAPSHOT_PATH_PREFIX + "nanox/";
 
 test("Unwrap nanos", async () => {
   jest.setTimeout(TIMEOUT);
 
   const sim = new Zemu(NANOS_ETH_ELF_PATH, NANOS_LIDO_LIB);
+
+  let tmpPath = getTmpPath(expect.getState().currentTestName);
 
   try {
     await sim.start(sim_options_nanos);
@@ -28,54 +24,69 @@ test("Unwrap nanos", async () => {
     let transport = await sim.getTransport();
     const eth = new Eth(transport);
 
-    let buffer = Buffer.from("058000002C8000003C800000010000000000000000F8494B8502540BE400830222E0947F39C581F595B53C5CB19BD0B3F8DA6C935E2CA080A4DE0E9A3E0000000000000000000000000000000000000000000000000159D99970F27DC3018080", "hex");
-
-    await eth.setExternalPlugin("0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0", "0xde0e9a3e");
-
     // Send transaction
-    let tx = transport.send(0xe0, 0x04, 0x00, 0x00, buffer);
+    let tx = eth.signTransaction("44'/60'/0'/1/0", "F8494B8502540BE400830222E0947F39C581F595B53C5CB19BD0B3F8DA6C935E2CA080A4DE0E9A3E0000000000000000000000000000000000000000000000000159D99970F27DC3018080");
+
     let filename;
 
     await sim.waitUntilScreenIsNot(sim.getMainMenuSnapshot());
     // Review tx
     filename = "review.png";
-    await sim.snapshot(SNAPSHOT_PATH_NANOS + filename);
-    const review = Zemu.LoadPng2RGB(SNAPSHOT_PATH_NANOS + filename);
+    await sim.snapshot(tmpPath + filename);
+    const review = Zemu.LoadPng2RGB(tmpPath + filename);
     const expected_review = Zemu.LoadPng2RGB(ORIGINAL_SNAPSHOT_PATH_NANOS + filename);
-    expect(review).toEqual(expected_review);
+    expect(review).toMatchSnapshot(expected_review);
 
     // Lido Stake message
     filename = "lido.png";
-    await sim.clickRight(SNAPSHOT_PATH_NANOS + filename);
-    const lido = Zemu.LoadPng2RGB(SNAPSHOT_PATH_NANOS + filename);
+    await sim.clickRight(tmpPath + filename);
+    const lido = Zemu.LoadPng2RGB(tmpPath + filename);
     const expected_lido = Zemu.LoadPng2RGB(ORIGINAL_SNAPSHOT_PATH_NANOS + filename);
-    expect(lido).toEqual(expected_lido);
+    expect(lido).toMatchSnapshot(expected_lido);
 
-    // Unwrap
-    filename = "unwrap.png";
-    await sim.clickRight(SNAPSHOT_PATH_NANOS + filename);
-    const unwrap = Zemu.LoadPng2RGB(SNAPSHOT_PATH_NANOS + filename);
-    const expected_unwrap = Zemu.LoadPng2RGB(ORIGINAL_SNAPSHOT_PATH_NANOS + filename);
-    expect(unwrap).toEqual(expected_unwrap);
+    // Unwrap (1/3)
+    filename = "unwrap_1.png";
+    await sim.clickRight(tmpPath + filename);
+    const unwrap_1 = Zemu.LoadPng2RGB(tmpPath + filename);
+    const expected_unwrap_1 = Zemu.LoadPng2RGB(ORIGINAL_SNAPSHOT_PATH_NANOS + filename);
+    expect(unwrap_1).toMatchSnapshot(expected_unwrap_1);
+
+    // unwrap (2/3)
+    filename = "unwrap_2.png";
+    await sim.clickRight(tmpPath + filename);
+    const unwrap_2 = Zemu.LoadPng2RGB(tmpPath + filename);
+    const expected_unwrap_2 = Zemu.LoadPng2RGB(ORIGINAL_SNAPSHOT_PATH_NANOS + filename);
+    expect(unwrap_2).toMatchSnapshot(expected_unwrap_2);
+
+    // Unwrap (3/3)
+    filename = "unwrap_3.png";
+    await sim.clickRight(tmpPath + filename);
+    const unwrap_3 = Zemu.LoadPng2RGB(tmpPath + filename);
+    const expected_unwrap_3 = Zemu.LoadPng2RGB(ORIGINAL_SNAPSHOT_PATH_NANOS + filename);
+    expect(unwrap_3).toMatchSnapshot(expected_unwrap_3);
 
     // Max Fees
     filename = "fees.png";
-    await sim.clickRight(SNAPSHOT_PATH_NANOS + filename);
-    const fees = Zemu.LoadPng2RGB(SNAPSHOT_PATH_NANOS + filename);
+    await sim.clickRight(tmpPath + filename);
+    const fees = Zemu.LoadPng2RGB(tmpPath + filename);
     const expected_fees = Zemu.LoadPng2RGB(ORIGINAL_SNAPSHOT_PATH_NANOS + filename);
-    expect(fees).toEqual(expected_fees);
+    expect(fees).toMatchSnapshot(expected_fees);
 
     // Accept
     filename = "accept.png";
-    await sim.clickRight(SNAPSHOT_PATH_NANOS + filename);
-    const accept = Zemu.LoadPng2RGB(SNAPSHOT_PATH_NANOS + filename);
+    await sim.clickRight(tmpPath + filename);
+    const accept = Zemu.LoadPng2RGB(tmpPath + filename);
     const expected_accept = Zemu.LoadPng2RGB(ORIGINAL_SNAPSHOT_PATH_NANOS + filename);
-    expect(accept).toEqual(expected_accept);
+    expect(accept).toMatchSnapshot(expected_accept);
 
     await sim.clickBoth();
 
     await expect(tx).resolves.toEqual(
-      Buffer.from([])
+      {
+        'r': '2d52718649be9e213293aefaa17e7fa4fa23f92a88b3e6b2e7cb9bc32af1ad7d',
+        's': '00a4a8e5fb59a09fb0af8a984fbcc37e042b7dc93380708818e22f8867f8149c',
+        'v': '26'
+      }
     );
   } finally {
     await sim.close();
@@ -87,60 +98,63 @@ test.skip("Unwrap nanox", async () => {
 
   const sim = new Zemu(NANOX_ETH_ELF_PATH, NANOX_LIDO_LIB);
 
+    let tmpPath = getTmpPath(expect.getState().currentTestName);
+
   try {
     await sim.start(sim_options_nanox);
 
     let transport = await sim.getTransport();
     const eth = new Eth(transport);
 
-    let buffer = Buffer.from("058000002C8000003C800000010000000000000000F8494B8502540BE400830222E0947F39C581F595B53C5CB19BD0B3F8DA6C935E2CA080A4DE0E9A3E0000000000000000000000000000000000000000000000000159D99970F27DC3018080", "hex");
-
-    await eth.setExternalPlugin("0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0", "0xde0e9a3e");
-
     // Send transaction
-    let tx = transport.send(0xe0, 0x04, 0x00, 0x00, buffer);
+    let tx = eth.signTransaction("44'/60'/0'/1/0", "F8494B8502540BE400830222E0947F39C581F595B53C5CB19BD0B3F8DA6C935E2CA080A4DE0E9A3E0000000000000000000000000000000000000000000000000159D99970F27DC3018080");
+
     let filename;
 
     await sim.waitUntilScreenIsNot(sim.getMainMenuSnapshot());
     // Review tx
     filename = "review.png";
-    await sim.snapshot(SNAPSHOT_PATH_NANOX + filename);
-    const review = Zemu.LoadPng2RGB(SNAPSHOT_PATH_NANOX + filename);
+    await sim.snapshot(tmpPath + filename);
+    const review = Zemu.LoadPng2RGB(tmpPath + filename);
     const expected_review = Zemu.LoadPng2RGB(ORIGINAL_SNAPSHOT_PATH_NANOX + filename);
-    expect(review).toEqual(expected_review);
+    expect(review).toMatchSnapshot(expected_review);
 
     // Lido Wrap message
     filename = "lido.png";
-    await sim.clickRight(SNAPSHOT_PATH_NANOX + filename);
-    const lido = Zemu.LoadPng2RGB(SNAPSHOT_PATH_NANOX + filename);
+    await sim.clickRight(tmpPath + filename);
+    const lido = Zemu.LoadPng2RGB(tmpPath + filename);
     const expected_lido = Zemu.LoadPng2RGB(ORIGINAL_SNAPSHOT_PATH_NANOX + filename);
-    expect(lido).toEqual(expected_lido);
+    expect(lido).toMatchSnapshot(expected_lido);
 
     // Unwrap
     filename = "unwrap.png";
-    await sim.clickRight(SNAPSHOT_PATH_NANOS + filename);
-    const wrap = Zemu.LoadPng2RGB(SNAPSHOT_PATH_NANOS + filename);
-    const expected_unwrap = Zemu.LoadPng2RGB(ORIGINAL_SNAPSHOT_PATH_NANOS + filename);
-    expect(unwrap).toEqual(expected_unwrap);
+    await sim.clickRight(tmpPath + filename);
+    const unwrap = Zemu.LoadPng2RGB(tmpPath + filename);
+    const expected_unwrap = Zemu.LoadPng2RGB(ORIGINAL_SNAPSHOT_PATH_NANOX + filename);
+    expect(unwrap).toMatchSnapshot(expected_unwrap);
 
     // Max Fees
     filename = "fees.png";
-    await sim.clickRight(SNAPSHOT_PATH_NANOX + filename);
-    const fees = Zemu.LoadPng2RGB(SNAPSHOT_PATH_NANOX + filename);
+    await sim.clickRight(tmpPath + filename);
+    const fees = Zemu.LoadPng2RGB(tmpPath + filename);
     const expected_fees = Zemu.LoadPng2RGB(ORIGINAL_SNAPSHOT_PATH_NANOX + filename);
-    expect(fees).toEqual(expected_fees);
+    expect(fees).toMatchSnapshot(expected_fees);
 
     // Accept
     filename = "accept.png";
-    await sim.clickRight(SNAPSHOT_PATH_NANOX + filename);
-    const accept = Zemu.LoadPng2RGB(SNAPSHOT_PATH_NANOX + filename);
+    await sim.clickRight(tmpPath + filename);
+    const accept = Zemu.LoadPng2RGB(tmpPath + filename);
     const expected_accept = Zemu.LoadPng2RGB(ORIGINAL_SNAPSHOT_PATH_NANOX + filename);
-    expect(accept).toEqual(expected_accept);
+    expect(accept).toMatchSnapshot(expected_accept);
 
     await sim.clickBoth();
 
     await expect(tx).resolves.toEqual(
-      Buffer.from([])
+      {
+        'r': '2d52718649be9e213293aefaa17e7fa4fa23f92a88b3e6b2e7cb9bc32af1ad7d',
+        's': '00a4a8e5fb59a09fb0af8a984fbcc37e042b7dc93380708818e22f8867f8149c',
+        'v': '26'
+      }
     );
   } finally {
     await sim.close();
