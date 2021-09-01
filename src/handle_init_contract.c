@@ -4,7 +4,7 @@
 void handle_init_contract(void *parameters) {
     ethPluginInitContract_t *msg = (ethPluginInitContract_t *) parameters;
 
-    if (msg->interfaceVersion != ETH_PLUGIN_INTERFACE_VERSION_1) {
+    if (msg->interfaceVersion != ETH_PLUGIN_INTERFACE_VERSION_LATEST) {
         msg->result = ETH_PLUGIN_RESULT_UNAVAILABLE;
         return;
     }
