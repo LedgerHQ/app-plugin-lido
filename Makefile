@@ -26,7 +26,7 @@ APP_LOAD_PARAMS += $(COMMON_LOAD_PARAMS)
 
 APPVERSION_M     = 1
 APPVERSION_N     = 0
-APPVERSION_P     = 4
+APPVERSION_P     = 5
 APPVERSION       = "$(APPVERSION_M).$(APPVERSION_N).$(APPVERSION_P)"
 
 APPNAME = "Lido"
@@ -155,4 +155,4 @@ include $(BOLOS_SDK)/Makefile.rules
 dep/%.d: %.c Makefile
 
 listvariants:
-	@echo VARIANTS NONE lido 
+	@echo VARIANTS NONE lido
