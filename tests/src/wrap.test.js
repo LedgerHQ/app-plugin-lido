@@ -93,7 +93,7 @@ test("Wrap nanos", async () => {
   }
 });
 
-test.skip("Wrap nanox", async () => {
+test("Wrap nanox", async () => {
   jest.setTimeout(TIMEOUT);
 
   const sim = new Zemu(NANOX_ETH_ELF_PATH, NANOX_LIDO_LIB);
