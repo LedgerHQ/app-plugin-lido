@@ -6,6 +6,7 @@ const sim_options_nanos = {
   start_delay: 2000,
   X11: true,
   custom: "",
+  startText: 'is ready'
 };
 
 const sim_options_nanox = {
@@ -14,6 +15,7 @@ const sim_options_nanox = {
   start_delay: 2000,
   X11: true,
   custom: "",
+  startText: 'is ready'
 };
 
 const Resolve = require("path").resolve;
