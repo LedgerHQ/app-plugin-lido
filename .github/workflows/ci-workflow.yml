@@ -61,7 +61,7 @@ jobs:
       - name: Build
         run: |
           make DEBUG=1 BOLOS_SDK=${{ matrix.SDK }}
-          mv bin/app.elf plugin_${{ matrix.name }}.elf
+          mv bin/app.elf lido_${{ matrix.name }}.elf
 
       - name: Upload
         uses: actions/upload-artifact@v2
