@@ -67,7 +67,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: binaries
-          path: plugin_${{ matrix.name }}.elf
+          path: lido_${{ matrix.name }}.elf
 
   job_build_ethereum:
     name: Build Ethereum application for Nano X & S/SP testing
