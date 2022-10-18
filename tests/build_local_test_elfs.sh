@@ -3,6 +3,7 @@
 # FILL THESE WITH YOUR OWN SDKs PATHS and APP-ETHEREUM's ROOT
 NANOS_SDK=$NANOS_SDK
 NANOX_SDK=$NANOX_SDK
+NANOSP_SDK=$NANOSP_SDK
 APP_ETHEREUM=${APP_ETHEREUM:-"/plugin_dev/app-ethereum"}
 
 # list of apps required by tests that we want to build here
