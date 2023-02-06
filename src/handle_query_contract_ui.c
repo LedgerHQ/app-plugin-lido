@@ -9,7 +9,7 @@ static void set_send_ui(ethQueryContractUI_t *msg, lido_parameters_t *context) {
         case SUBMIT:
             strlcpy(msg->title, "Stake", msg->titleLength);
             decimals = WEI_TO_ETHER;
-            ticker = "ETH ";
+            ticker = "ETH";
             break;
         case UNWRAP:
             strlcpy(msg->title, "Unwrap", msg->titleLength);
