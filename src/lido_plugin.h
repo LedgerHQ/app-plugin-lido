@@ -10,10 +10,10 @@
 
 #define PLUGIN_NAME "Lido"
 
-#define STETH_TICKER   "stETH "
+#define STETH_TICKER   "stETH"
 #define STETH_DECIMALS WEI_TO_ETHER
 
-#define WSTETH_TICKER   "wstETH "
+#define WSTETH_TICKER   "wstETH"
 #define WSTETH_DECIMALS WEI_TO_ETHER
 
 typedef enum {

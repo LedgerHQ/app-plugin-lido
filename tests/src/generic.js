@@ -21,8 +21,8 @@ const sim_options_nanox = {
 const Resolve = require("path").resolve;
 const NANOS_ETH_ELF_PATH = Resolve("elfs/ethereum_nanos.elf");
 const NANOX_ETH_ELF_PATH = Resolve("elfs/ethereum_nanox.elf");
-const NANOS_LIDO_LIB = { Lido: Resolve("elfs/lido_nanos.elf") };
-const NANOX_LIDO_LIB = { Lido: Resolve("elfs/lido_nanox.elf") };
+const NANOS_LIDO_LIB = { Lido: Resolve("elfs/plugin_nanos.elf") };
+const NANOX_LIDO_LIB = { Lido: Resolve("elfs/plugin_nanox.elf") };
 
 const TIMEOUT = 1000000;
 
