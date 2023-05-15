@@ -13,6 +13,12 @@ static void handle_bytes(ethPluginProvideParameter_t *msg, lido_parameters_t *co
    memcpy(context->bytes, msg->parameter, PARAMETER_LENGTH);
 }
 
+static void handle_address_sent(ethPluginProvideParameter_t *msg, lido_parameters_t *context) {
+    copy_address(context->address_sent,
+                 msg->parameter,
+                 sizeof(context->address_sent));
+}
+
 static void handle_submit(ethPluginProvideParameter_t *msg, lido_parameters_t *context) {
     // ABI for submit is: submit(address referral)
     if (context->next_param == REFERRAL) {
@@ -69,8 +75,8 @@ static void handle_permit(ethPluginProvideParameter_t *msg, lido_parameters_t *c
             break;
         case AMOUNT_FIRST:
             context->tmp_len--;
-
-            if (!U2BE_from_parameter(msg->parameter, &context->amount_sent)) {
+            memset(context->amount_sent, 0, sizeof(context->amount_sent));
+            if (!memcpy(context->amount_sent, msg->parameter, PARAMETER_LENGTH)) {
                 msg->result = ETH_PLUGIN_RESULT_ERROR;
                 break;
             }
@@ -83,33 +89,34 @@ static void handle_permit(ethPluginProvideParameter_t *msg, lido_parameters_t *c
             }
             break;
         case AMOUNT_LAST:
-            if (!U2BE_from_parameter(msg->parameter, &context->amount_received)) {
+            memset(context->amount_sent, 0, sizeof(context->amount_sent));
+            if (!memcpy(context->amount_sent, msg->parameter, PARAMETER_LENGTH)) {
                 msg->result = ETH_PLUGIN_RESULT_ERROR;
                 break;
             }
             context->next_param = ADDRESS_SENT;
             break;
         case ADDRESS_SENT:
-            handle_address_sent();
+            handle_address_sent(msg, context);
             context->next_param = AMOUNT_SENT;
             break;
         case AMOUNT_SENT:
-            handle_amount_sent();
+            handle_amount_sent(msg, context);
             context->next_param = DEADLINE;
             break;
         case DEADLINE: 
-            handle_amount_sent();
+            handle_amount_sent(msg, context);
             context->next_param = PERMIT_V;
             break;
         case PERMIT_V: 
-            handle_amount_sent();
+            handle_amount_sent(msg, context);
             context->next_param = PERMIT_R;
             break;
         case PERMIT_R:
         case PERMIT_S:
-            handle_bytes();
+            handle_bytes(msg, context);
             if(context->next_param == PERMIT_R) {
-                context->next_param = PERMIT_S
+                context->next_param = PERMIT_S;
             }
             break;
         default:

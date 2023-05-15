@@ -35,13 +35,6 @@ static void set_send_ui(ethQueryContractUI_t *msg, lido_parameters_t *context) {
                    msg->msgLength);
 }
 
-// Set UI for "Warning" screen.
-static void set_warning_ui(ethQueryContractUI_t *msg,
-                           const apwine_parameters_t *context __attribute__((unused))) {
-    strlcpy(msg->title, "WARNING", msg->titleLength);
-    strlcpy(msg->msg, "Unknown token", msg->msgLength);
-}
-
 void handle_query_contract_ui(void *parameters) {
     ethQueryContractUI_t *msg = (ethQueryContractUI_t *) parameters;
     lido_parameters_t *context = (lido_parameters_t *) msg->pluginContext;
@@ -57,10 +50,6 @@ void handle_query_contract_ui(void *parameters) {
             set_send_ui(msg, context);
             break;
         case REQUEST_WITHDRAWALS_WITH_PERMIT:
-            strlcpy(msg->version, "Request withdrawals with permit", msg->versionLength);
-            break;
-        case WARN_SCREEN:
-            set_warning_ui(msg, context);
             break;
         default:
             PRINTF("Received an invalid screenIndex\n");

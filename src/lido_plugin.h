@@ -29,6 +29,10 @@ typedef enum {
     AMOUNT_FIRST,
     AMOUNT_LAST,
     ADDRESS_SENT,
+    DEADLINE,
+    PERMIT_V,
+    PERMIT_R,
+    PERMIT_S,
     REFERRAL,
     NONE,
     OFFSET,
@@ -50,7 +54,7 @@ typedef struct lido_parameters_t {
                                          // string was done in ETH_QUERY_CONTRAT_UI in
                                          // ETH_QUERY_CONTRAT_UI
     uint8_t amount_received[INT256_LENGTH];
-    uint8_t contract_address_sent[ADDRESS_LENGTH];
+    uint8_t address_sent[ADDRESS_LENGTH];
 
     char bytes[INT256_LENGTH];
     // 32 * 2 + 20 + 32 = 116
