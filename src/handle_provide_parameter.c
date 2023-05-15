@@ -44,6 +44,54 @@ static void handle_wrap(ethPluginProvideParameter_t *msg, lido_parameters_t *con
     }
 }
 
+static void handle_permit(ethPluginProvideParameter_t *msg, lido_parameters_t *context) {
+    // ABI for wrap is: wrap(uint256 amount)
+    // ABI for unwrap is: unwrap(uint256 amount)
+    switch (context->next_param) {
+        case OFFSET:
+            // Offset to the args amounts
+            context->offset = U2BE(msg->parameter, PARAMETER_LENGTH - sizeof(context->offset));
+            context->next_param = AMOUNT_LENGTH;
+            break;
+        case AMOUNT_LENGTH:  // _pairPath length
+            if (!U2BE_from_parameter(msg->parameter, &(context->array_len)) &&
+                context->array_len == 0) {
+                msg->result = ETH_PLUGIN_RESULT_ERROR;
+                break;
+            }
+            context->tmp_len = context->array_len;
+            context->next_param = AMOUNT_FIRST;
+            break;
+        case AMOUNT_FIRST:
+            context->tmp_len--;
+
+            if (!U2BE_from_parameter(msg->parameter, &context->amount_sent)) {
+                msg->result = ETH_PLUGIN_RESULT_ERROR;
+                break;
+            }
+
+            if (context->tmp_len == 0) {
+                context->next_param = AMOUNT_LENGTH;
+            } else {
+                context->skip = context->tmp_len - 1;
+                context->next_param = AMOUNT_LAST;
+            }
+            break;
+
+        case AMOUNT_LAST:
+            if (!U2BE_from_parameter(msg->parameter, &context->amount_received)) {
+                msg->result = ETH_PLUGIN_RESULT_ERROR;
+                break;
+            }
+            context->next_param = AMOUNT_LENGTH;
+            break;
+        default:
+            PRINTF("Param not supported\n");
+            msg->result = ETH_PLUGIN_RESULT_ERROR;
+            break;
+    }
+}
+
 void handle_provide_parameter(void *parameters) {
     ethPluginProvideParameter_t *msg = (ethPluginProvideParameter_t *) parameters;
     lido_parameters_t *context = (lido_parameters_t *) msg->pluginContext;
@@ -54,6 +102,16 @@ void handle_provide_parameter(void *parameters) {
 
     msg->result = ETH_PLUGIN_RESULT_OK;
 
+    if ((context->offset) &&
+            msg->parameterOffset != context->checkpoint + context->offset + SELECTOR_SIZE) {
+            PRINTF("offset: %d, checkpoint: %d, parameterOffset: %d\n",
+                   context->offset,
+                   context->checkpoint,
+                   msg->parameterOffset);
+            return;
+        }
+    context->offset = 0;  // Reset offset
+
     switch (context->selectorIndex) {
         case SUBMIT:
             handle_submit(msg, context);
@@ -62,6 +120,9 @@ void handle_provide_parameter(void *parameters) {
         case UNWRAP:
         case WRAP:
             handle_wrap(msg, context);
+            break;
+        case REQUEST_WITHDRAWALS_WITH_PERMIT:
+            handle_permit(msg, context);
             break;
         default:
             PRINTF("Selector Index %d not supported\n", context->selectorIndex);
