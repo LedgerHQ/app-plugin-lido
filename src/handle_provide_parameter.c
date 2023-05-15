@@ -8,6 +8,11 @@ static void handle_amount_sent(ethPluginProvideParameter_t *msg, lido_parameters
     context->amount_length = PARAMETER_LENGTH;
 }
 
+static void handle_bytes(ethPluginProvideParameter_t *msg, lido_parameters_t *context) {
+   memset(context->bytes, 0, sizeof(context->bytes));
+   memcpy(context->bytes, msg->parameter, PARAMETER_LENGTH);
+}
+
 static void handle_submit(ethPluginProvideParameter_t *msg, lido_parameters_t *context) {
     // ABI for submit is: submit(address referral)
     if (context->next_param == REFERRAL) {
@@ -77,13 +82,35 @@ static void handle_permit(ethPluginProvideParameter_t *msg, lido_parameters_t *c
                 context->next_param = AMOUNT_LAST;
             }
             break;
-
         case AMOUNT_LAST:
             if (!U2BE_from_parameter(msg->parameter, &context->amount_received)) {
                 msg->result = ETH_PLUGIN_RESULT_ERROR;
                 break;
             }
-            context->next_param = AMOUNT_LENGTH;
+            context->next_param = ADDRESS_SENT;
+            break;
+        case ADDRESS_SENT:
+            handle_address_sent();
+            context->next_param = AMOUNT_SENT;
+            break;
+        case AMOUNT_SENT:
+            handle_amount_sent();
+            context->next_param = DEADLINE;
+            break;
+        case DEADLINE: 
+            handle_amount_sent();
+            context->next_param = PERMIT_V;
+            break;
+        case PERMIT_V: 
+            handle_amount_sent();
+            context->next_param = PERMIT_R;
+            break;
+        case PERMIT_R:
+        case PERMIT_S:
+            handle_bytes();
+            if(context->next_param == PERMIT_R) {
+                context->next_param = PERMIT_S
+            }
             break;
         default:
             PRINTF("Param not supported\n");
@@ -102,6 +129,10 @@ void handle_provide_parameter(void *parameters) {
 
     msg->result = ETH_PLUGIN_RESULT_OK;
 
+    if (context->skip) {
+        // Skip this step, and don't forget to decrease skipping counter.
+        context->skip--;
+    }
     if ((context->offset) &&
             msg->parameterOffset != context->checkpoint + context->offset + SELECTOR_SIZE) {
             PRINTF("offset: %d, checkpoint: %d, parameterOffset: %d\n",

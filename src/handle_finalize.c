@@ -5,7 +5,16 @@ void handle_finalize(void *parameters) {
     lido_parameters_t *context = (lido_parameters_t *) msg->pluginContext;
     PRINTF("handle finalize\n");
     if (context->valid) {
-        msg->numScreens = 1;
+       switch (context->selectorIndex) {
+        case SUBMIT:
+        case UNWRAP:
+        case WRAP:
+            msg->numScreens = 1;
+            break;
+        case REQUEST_WITHDRAWALS_WITH_PERMIT:
+            msg->numScreens = 7;
+            break;
+        }
         msg->uiType = ETH_UI_TYPE_GENERIC;
         msg->result = ETH_PLUGIN_RESULT_OK;
     } else {

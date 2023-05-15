@@ -25,12 +25,13 @@ typedef enum {
 
 typedef enum {
     AMOUNT_SENT,
-    REFERRAL,
-    NONE,
-    OFFSET,
     AMOUNT_LENGTH,
     AMOUNT_FIRST,
     AMOUNT_LAST,
+    ADDRESS_SENT,
+    REFERRAL,
+    NONE,
+    OFFSET,
 } selectorField;
 
 extern const uint8_t *const LIDO_SELECTORS[NUM_LIDO_SELECTORS];
@@ -50,7 +51,9 @@ typedef struct lido_parameters_t {
                                          // ETH_QUERY_CONTRAT_UI
     uint8_t amount_received[INT256_LENGTH];
     uint8_t contract_address_sent[ADDRESS_LENGTH];
-    // 32 * 2 + 20 = 84
+
+    char bytes[INT256_LENGTH];
+    // 32 * 2 + 20 + 32 = 116
                                         
     uint16_t offset;
     uint16_t checkpoint;
@@ -58,6 +61,7 @@ typedef struct lido_parameters_t {
     uint16_t array_len;
     // 2 * 4 = 8
 
+    uint8_t skip;
     uint8_t amount_length;
     uint8_t next_param;
     uint8_t selectorIndex;
