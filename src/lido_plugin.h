@@ -67,7 +67,7 @@ typedef struct lido_parameters_t {
     uint8_t selectorIndex;
     bool valid;
     // 1 * 4 = 4
-    // 84 + 8 + 4 = 96 --- MAX is 160 (5 * 32)
+    // 116 + 8 + 5 = 129 --- MAX is 160 (5 * 32)
 } lido_parameters_t;
 
 _Static_assert(sizeof(lido_parameters_t) <= 5 * 32, "Structure of parameters too big.");
