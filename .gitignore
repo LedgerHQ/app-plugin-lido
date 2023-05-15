@@ -2,6 +2,7 @@
 src/glyphs.c
 src/glyphs.h
 bin/
+build/
 debug/
 dep/
 obj/
