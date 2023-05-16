@@ -56,11 +56,14 @@ typedef struct lido_parameters_t {
     uint16_t array_len;
     // 2 * 4 = 8
 
+    // uint8_t tokens_found;
+    // uint8_t decimals_sent;
+    // uint8_t decimals_received;
     uint8_t skip;
     uint8_t amount_length;
     uint8_t next_param;
     uint8_t selectorIndex;
-    bool valid;
+    uint8_t valid;
     // 1 * 4 = 4
     // 116 + 8 + 5 = 129 --- MAX is 160 (5 * 32)
 } lido_parameters_t;

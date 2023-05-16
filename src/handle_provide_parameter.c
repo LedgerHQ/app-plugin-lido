@@ -3,9 +3,7 @@
 // Store the amount sent in the form of a string, without any ticker or
 // decimals. These will be added right before display.
 static void handle_amount_sent(ethPluginProvideParameter_t *msg, lido_parameters_t *context) {
-    memset(context->amount_sent, 0, sizeof(context->amount_sent));
-    memcpy(context->amount_sent, msg->parameter, PARAMETER_LENGTH);
-    context->amount_length = PARAMETER_LENGTH;
+    memcpy(context->amount_sent, msg->parameter, INT256_LENGTH);
 }
 
 static void handle_address_sent(ethPluginProvideParameter_t *msg, lido_parameters_t *context) {
@@ -27,11 +25,9 @@ static void handle_submit(ethPluginProvideParameter_t *msg, lido_parameters_t *c
 
 // Similar to handle_amount_sent but takes the amount from the transaction data (in ETH).
 static void copy_eth_amount(ethPluginProvideParameter_t *msg, lido_parameters_t *context) {
-    memset(context->amount_sent, 0, sizeof(context->amount_sent));
     memcpy(context->amount_sent,
            &msg->pluginSharedRO->txContent->value.value,
            msg->pluginSharedRO->txContent->value.length);
-    context->amount_length = msg->pluginSharedRO->txContent->value.length;
 }
 
 static void handle_wrap(ethPluginProvideParameter_t *msg, lido_parameters_t *context) {
@@ -51,8 +47,6 @@ static void handle_wrap(ethPluginProvideParameter_t *msg, lido_parameters_t *con
 }
 
 static void handle_permit(ethPluginProvideParameter_t *msg, lido_parameters_t *context) {
-    // ABI for wrap is: wrap(uint256 amount)
-    // ABI for unwrap is: unwrap(uint256 amount)
     switch (context->next_param) {
         case ADDRESS_SENT:
             handle_address_sent(msg, context);
@@ -60,7 +54,10 @@ static void handle_permit(ethPluginProvideParameter_t *msg, lido_parameters_t *c
             break;
         case AMOUNT_SENT:
             handle_amount_sent(msg, context);
-            context->next_param = DEADLINE;
+            context->next_param = NONE;
+            // rest of the transaction doesnt need to be displayed on ledger ( permit signature )
+            break;
+        case NONE:
             break;
         default:
             PRINTF("Param not supported\n");
@@ -79,20 +76,19 @@ void handle_provide_parameter(void *parameters) {
 
     msg->result = ETH_PLUGIN_RESULT_OK;
 
+ // If not used remove from here
     if (context->skip) {
         // Skip this step, and don't forget to decrease skipping counter.
         context->skip--;
-    }
-    if ((context->offset) &&
-            msg->parameterOffset != context->checkpoint + context->offset + SELECTOR_SIZE) {
+    } else {
+        if ((context->offset) && msg->parameterOffset != context->checkpoint + context->offset) {
             PRINTF("offset: %d, checkpoint: %d, parameterOffset: %d\n",
                    context->offset,
                    context->checkpoint,
                    msg->parameterOffset);
             return;
         }
-    context->offset = 0;  // Reset offset
-
+    context->offset = 0;
     switch (context->selectorIndex) {
         case SUBMIT:
             handle_submit(msg, context);
@@ -110,4 +106,6 @@ void handle_provide_parameter(void *parameters) {
             msg->result = ETH_PLUGIN_RESULT_ERROR;
             break;
     }
+    // set valid to true after parsing all parameters
+    context->valid = 1;
 }

@@ -23,7 +23,7 @@ void handle_init_contract(void *parameters) {
             break;
         }
     }
-
+    context->valid = 0; // init on false for security
     // Set `next_param` to be the first field we expect to parse.
     switch (context->selectorIndex) {
         case SUBMIT:
@@ -34,14 +34,13 @@ void handle_init_contract(void *parameters) {
             context->next_param = AMOUNT_SENT;
             break;
         case REQUEST_WITHDRAWALS_WITH_PERMIT:
-            context->next_param = OFFSET;
+            context->skip++; // skip offset
+            context->next_param = ADDRESS_SENT;
             break;
         default:
             PRINTF("Missing selectorIndex\n");
             msg->result = ETH_PLUGIN_RESULT_ERROR;
             return;
     }
-
-    context->valid = true;
     msg->result = ETH_PLUGIN_RESULT_OK;
 }

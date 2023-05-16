@@ -12,7 +12,7 @@ void handle_finalize(void *parameters) {
             msg->numScreens = 1;
             break;
         case REQUEST_WITHDRAWALS_WITH_PERMIT:
-            msg->numScreens = 7;
+            msg->numScreens = 2;
             break;
         }
         msg->uiType = ETH_UI_TYPE_GENERIC;
