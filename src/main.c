@@ -15,10 +15,19 @@
  *  limitations under the License.
  ********************************************************************************/
 
+#include <stdbool.h>
+#include <stdint.h>
+#include <string.h>
+
 #include "os.h"
+#include "cx.h"
+
+#include "glyphs.h"
+
 #include "lido_plugin.h"
 
 void dispatch_plugin_calls(int message, void *parameters) {
+    PRINTF("Handling message %d\n", message);
     switch (message) {
         case ETH_PLUGIN_INIT_CONTRACT:
             handle_init_contract(parameters);
@@ -54,8 +63,6 @@ void handle_query_ui_exception(unsigned int *args) {
     }
 }
 
-#define RUN_APPLICATION 1
-
 void call_app_ethereum() {
     unsigned int libcall_params[3];
     libcall_params[0] = (unsigned int) "Ethereum";
@@ -82,10 +89,10 @@ __attribute__((section(".boot"))) int main(int arg0) {
             } else {
                 // regular call from ethereum
                 unsigned int *args = (unsigned int *) arg0;
-
                 if (args[0] != ETH_PLUGIN_CHECK_PRESENCE) {
                     dispatch_plugin_calls(args[0], (void *) args[1]);
                 }
+                os_lib_end();
             }
         }
         CATCH_OTHER(e) {
@@ -101,6 +108,7 @@ __attribute__((section(".boot"))) int main(int arg0) {
             PRINTF("Exception 0x%x caught\n", e);
         }
         FINALLY {
+            // Call `os_lib_end`, go back to the ethereum app.
             os_lib_end();
         }
     }

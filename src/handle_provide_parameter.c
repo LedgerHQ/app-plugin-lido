@@ -88,25 +88,25 @@ void handle_provide_parameter(void *parameters) {
                    msg->parameterOffset);
             return;
         }    
-    }
-    context->offset = 0;
-    switch (context->selectorIndex) {
-        case SUBMIT:
-            handle_submit(msg, context);
-            copy_eth_amount(msg, context);
-            break;
-        case UNWRAP:
-        case WRAP:
-            handle_wrap(msg, context);
-            break;
-        case REQUEST_WITHDRAWALS_WITH_PERMIT:
-            handle_permit(msg, context);
-            break;
-        default:
-            PRINTF("Selector Index %d not supported\n", context->selectorIndex);
-            msg->result = ETH_PLUGIN_RESULT_ERROR;
-            break;
-    }
-    // set valid to true after parsing all parameters
-    context->valid = 1;
+        context->offset = 0;
+        switch (context->selectorIndex) {
+            case SUBMIT:
+                handle_submit(msg, context);
+                copy_eth_amount(msg, context);
+                break;
+            case UNWRAP:
+            case WRAP:
+                handle_wrap(msg, context);
+                break;
+            case REQUEST_WITHDRAWALS_WITH_PERMIT:
+                handle_permit(msg, context);
+                break;
+            default:
+                PRINTF("Selector Index %d not supported\n", context->selectorIndex);
+                msg->result = ETH_PLUGIN_RESULT_ERROR;
+                break;
+            }
+        // set valid to true after parsing all parameters
+        context->valid = 1;
+        }
 }

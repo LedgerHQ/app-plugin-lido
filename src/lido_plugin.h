@@ -1,14 +1,15 @@
 #pragma once
 
-#include "eth_plugin_interface.h"
+#include <string.h>
 #include <stdbool.h>
+#include "eth_plugin_interface.h"
 
 #define PARAMETER_LENGTH 32
 #define SELECTOR_SIZE    4
 
 #define NUM_LIDO_SELECTORS 4
 
-#define PLUGIN_NAME "Lido"
+#define PLUGIN_NAME "lido"
 
 #define STETH_TICKER   "stETH"
 #define STETH_DECIMALS WEI_TO_ETHER

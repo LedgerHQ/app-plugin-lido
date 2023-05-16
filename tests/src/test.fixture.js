@@ -29,9 +29,9 @@ const APP_PATH_NANOS = Resolve("elfs/ethereum_nanos.elf");
 const APP_PATH_NANOX = Resolve("elfs/ethereum_nanox.elf");
 const APP_PATH_NANOSP = Resolve("elfs/ethereum_nanosp.elf");
 
-const PLUGIN_LIB_NANOS = { lido: Resolve("elfs/lido.elf") };
-const PLUGIN_LIB_NANOX = { lido: Resolve("elfs/lido.elf") };
-const PLUGIN_LIB_NANOSP = { lido: Resolve("elfs/lido.elf") };
+const PLUGIN_LIB_NANOS = { lido: Resolve("elfs/lido_nanos.elf") };
+const PLUGIN_LIB_NANOX = { lido: Resolve("elfs/lido_nanox.elf") };
+const PLUGIN_LIB_NANOSP = { lido: Resolve("elfs/lido_nanosp.elf") };
 
 const RANDOM_ADDRESS = "0xaaaabbbbccccddddeeeeffffgggghhhhiiiijjjj";
 
@@ -143,6 +143,7 @@ async function processTransaction(eth, sim, steps, label, rawTxHex, srlTx = "") 
   let serializedTx;
   if (srlTx == "") serializedTx = txFromEtherscan(rawTxHex);
   else serializedTx = srlTx;
+  console.warn(config);
   const resolution = await ledgerService
     .resolveTransaction(
       serializedTx,

@@ -2,8 +2,8 @@
   "chainId": 1,
   "contracts": [
     {
-      "address": "0x077b60752864b3e5291863cf8890603f9ab335d3",
-      "contractName": "stETH",
+      "address": "0xcf117961421ca9e546cd7f50bc73abcdb3039533",
+      "contractName": "OssifiableProxy",
       "selectors": {
         "0xacf41e4d": {
           "erc20OfInterest": [],

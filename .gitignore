@@ -24,3 +24,4 @@ tests/elfs
 tests/node_modules
 tests/lib
 tests/snapshots/tmp
+tests/snapshots-tmp
