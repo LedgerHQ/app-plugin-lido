@@ -3,6 +3,7 @@ src/glyphs.c
 src/glyphs.h
 bin/
 build/
+build/nanos2
 debug/
 dep/
 obj/
@@ -20,6 +21,7 @@ __pycache__/
 .python-version
 
 # JS
+tests/elfs
 tests/node_modules
 tests/lib
 tests/snapshots/tmp

@@ -87,7 +87,8 @@ void handle_provide_parameter(void *parameters) {
                    context->checkpoint,
                    msg->parameterOffset);
             return;
-        }
+        }    
+    }
     context->offset = 0;
     switch (context->selectorIndex) {
         case SUBMIT:

@@ -16,6 +16,9 @@
 #define WSTETH_TICKER   "wstETH"
 #define WSTETH_DECIMALS WEI_TO_ETHER
 
+#define TOKEN_SENT_FOUND     1
+#define TOKEN_RECEIVED_FOUND 1 << 1
+
 typedef enum {
     SUBMIT,
     WRAP,
@@ -51,14 +54,12 @@ typedef struct lido_parameters_t {
                                          // string was done in ETH_QUERY_CONTRAT_UI in
                                          // ETH_QUERY_CONTRAT_UI
     uint8_t address_sent[ADDRESS_LENGTH];
-
-    char bytes[INT256_LENGTH];
-    // 32 * 2 + 20 + 32 = 116
+    char ticker_sent[MAX_TICKER_LEN];
+    char ticker_received[MAX_TICKER_LEN];
+    // 32 + 20 + 11 + 11 = 116
                                         
     uint16_t offset;
     uint16_t checkpoint;
-    uint16_t tmp_len;
-    uint16_t array_len;
     // 2 * 4 = 8
 
     uint8_t tokens_found;

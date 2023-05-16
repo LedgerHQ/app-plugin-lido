@@ -70,7 +70,7 @@ static void set_address_ui(ethQueryContractUI_t *msg, lido_parameters_t *context
 
     msg->msg[0] = '0';
     msg->msg[1] = 'x';
-    getEthAddressStringFromBinary((uint8_t *) context->address,
+    getEthAddressStringFromBinary((uint8_t *) context->address_sent,
                                   msg->msg + 2,
                                   msg->pluginSharedRW->sha3,
                                   0);
