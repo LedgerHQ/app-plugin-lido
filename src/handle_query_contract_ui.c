@@ -21,40 +21,8 @@ static void set_send_ui(ethQueryContractUI_t *msg, lido_parameters_t *context) {
             decimals = STETH_DECIMALS;
             ticker = STETH_TICKER;
             break;
-        default:
-            PRINTF("Unhandled selector Index: %d\n", context->selectorIndex);
-            msg->result = ETH_PLUGIN_RESULT_ERROR;
-            return;
-    }
-
-    amountToString(context->amount_sent,
-                   INT256_LENGTH,
-                   decimals,
-                   ticker,
-                   msg->msg,
-                   msg->msgLength);
-}
-
-// Set UI for the "Address" screen.
-static void set_address_ui(ethQueryContractUI_t *msg, lido_parameters_t *context) {
-    uint8_t decimals = 0;
-    char *ticker;
-
-    switch (context->selectorIndex) {
-        case SUBMIT:
-            strlcpy(msg->title, "Stake", msg->titleLength);
-            decimals = WEI_TO_ETHER;
-            ticker = "ETH";
-            break;
-        case UNWRAP:
-            strlcpy(msg->title, "Unwrap", msg->titleLength);
-            decimals = WSTETH_DECIMALS;
-            ticker = WSTETH_TICKER;
-            break;
-        case WRAP:
-            strlcpy(msg->title, "Wrap", msg->titleLength);
-            decimals = STETH_DECIMALS;
-            ticker = STETH_TICKER;
+        case REQUEST_WITHDRAWALS_WITH_PERMIT:
+            strlcpy(msg->title, "Value", msg->titleLength);
             break;
         default:
             PRINTF("Unhandled selector Index: %d\n", context->selectorIndex);
@@ -77,7 +45,35 @@ static void set_address_ui(ethQueryContractUI_t *msg, lido_parameters_t *context
                    ticker,
                    msg->msg,
                    msg->msgLength);
+        case REQUEST_WITHDRAWALS_WITH_PERMIT:
+            amountToString(context->amount_sent,
+                           INT256_LENGTH,
+                           context->decimals_sent,
+                           context->ticker_sent,
+                           msg->msg,
+                           msg->msgLength);
+            break;
     }
+}
+
+// Set UI for the "Address" screen.
+static void set_address_ui(ethQueryContractUI_t *msg, lido_parameters_t *context) {
+    switch (context->selectorIndex) {
+        case REQUEST_WITHDRAWALS_WITH_PERMIT:
+            strlcpy(msg->title, "Owner", msg->titleLength);
+            break;
+        default:
+            PRINTF("Unhandled selector Index: %d\n", context->selectorIndex);
+            msg->result = ETH_PLUGIN_RESULT_ERROR;
+            return;
+    }
+
+    msg->msg[0] = '0';
+    msg->msg[1] = 'x';
+    getEthAddressStringFromBinary((uint8_t *) context->address,
+                                  msg->msg + 2,
+                                  msg->pluginSharedRW->sha3,
+                                  0);
 }
 
 // Helper function that returns the enum corresponding to the screen that should be displayed.
@@ -120,6 +116,8 @@ void handle_query_contract_ui(void *parameters) {
     memset(msg->title, 0, msg->titleLength);
     memset(msg->msg, 0, msg->msgLength);
     msg->result = ETH_PLUGIN_RESULT_OK;
+
+    screens_t screen = get_screen(msg, context);
     switch (screen) {
         case SEND_SCREEN:
             set_send_ui(msg, context);

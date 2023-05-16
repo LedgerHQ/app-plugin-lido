@@ -24,6 +24,11 @@ typedef enum {
 } lidoSelector_t;
 
 typedef enum {
+    SEND_SCREEN,
+    ADDRESS_SCREEN,
+    ERROR,
+} screens_t;
+typedef enum {
     AMOUNT_SENT,
     ADDRESS_SENT,
     REFERRAL,
@@ -56,9 +61,9 @@ typedef struct lido_parameters_t {
     uint16_t array_len;
     // 2 * 4 = 8
 
-    // uint8_t tokens_found;
-    // uint8_t decimals_sent;
-    // uint8_t decimals_received;
+    uint8_t tokens_found;
+    uint8_t decimals_sent;
+    uint8_t decimals_received;
     uint8_t skip;
     uint8_t amount_length;
     uint8_t next_param;
