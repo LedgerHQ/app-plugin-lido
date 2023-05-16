@@ -3,7 +3,6 @@ src/glyphs.c
 src/glyphs.h
 bin/
 build/
-build/nanos2
 debug/
 dep/
 obj/
