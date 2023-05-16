@@ -8,11 +8,6 @@ static void handle_amount_sent(ethPluginProvideParameter_t *msg, lido_parameters
     context->amount_length = PARAMETER_LENGTH;
 }
 
-static void handle_bytes(ethPluginProvideParameter_t *msg, lido_parameters_t *context) {
-   memset(context->bytes, 0, sizeof(context->bytes));
-   memcpy(context->bytes, msg->parameter, PARAMETER_LENGTH);
-}
-
 static void handle_address_sent(ethPluginProvideParameter_t *msg, lido_parameters_t *context) {
     copy_address(context->address_sent,
                  msg->parameter,
@@ -59,43 +54,6 @@ static void handle_permit(ethPluginProvideParameter_t *msg, lido_parameters_t *c
     // ABI for wrap is: wrap(uint256 amount)
     // ABI for unwrap is: unwrap(uint256 amount)
     switch (context->next_param) {
-        case OFFSET:
-            // Offset to the args amounts
-            context->offset = U2BE(msg->parameter, PARAMETER_LENGTH - sizeof(context->offset));
-            context->next_param = AMOUNT_LENGTH;
-            break;
-        case AMOUNT_LENGTH:  // _pairPath length
-            if (!U2BE_from_parameter(msg->parameter, &(context->array_len)) &&
-                context->array_len == 0) {
-                msg->result = ETH_PLUGIN_RESULT_ERROR;
-                break;
-            }
-            context->tmp_len = context->array_len;
-            context->next_param = AMOUNT_FIRST;
-            break;
-        case AMOUNT_FIRST:
-            context->tmp_len--;
-            memset(context->amount_sent, 0, sizeof(context->amount_sent));
-            if (!memcpy(context->amount_sent, msg->parameter, PARAMETER_LENGTH)) {
-                msg->result = ETH_PLUGIN_RESULT_ERROR;
-                break;
-            }
-
-            if (context->tmp_len == 0) {
-                context->next_param = AMOUNT_LENGTH;
-            } else {
-                context->skip = context->tmp_len - 1;
-                context->next_param = AMOUNT_LAST;
-            }
-            break;
-        case AMOUNT_LAST:
-            memset(context->amount_sent, 0, sizeof(context->amount_sent));
-            if (!memcpy(context->amount_sent, msg->parameter, PARAMETER_LENGTH)) {
-                msg->result = ETH_PLUGIN_RESULT_ERROR;
-                break;
-            }
-            context->next_param = ADDRESS_SENT;
-            break;
         case ADDRESS_SENT:
             handle_address_sent(msg, context);
             context->next_param = AMOUNT_SENT;
@@ -103,21 +61,6 @@ static void handle_permit(ethPluginProvideParameter_t *msg, lido_parameters_t *c
         case AMOUNT_SENT:
             handle_amount_sent(msg, context);
             context->next_param = DEADLINE;
-            break;
-        case DEADLINE: 
-            handle_amount_sent(msg, context);
-            context->next_param = PERMIT_V;
-            break;
-        case PERMIT_V: 
-            handle_amount_sent(msg, context);
-            context->next_param = PERMIT_R;
-            break;
-        case PERMIT_R:
-        case PERMIT_S:
-            handle_bytes(msg, context);
-            if(context->next_param == PERMIT_R) {
-                context->next_param = PERMIT_S;
-            }
             break;
         default:
             PRINTF("Param not supported\n");

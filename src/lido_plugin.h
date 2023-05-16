@@ -25,17 +25,9 @@ typedef enum {
 
 typedef enum {
     AMOUNT_SENT,
-    AMOUNT_LENGTH,
-    AMOUNT_FIRST,
-    AMOUNT_LAST,
     ADDRESS_SENT,
-    DEADLINE,
-    PERMIT_V,
-    PERMIT_R,
-    PERMIT_S,
     REFERRAL,
     NONE,
-    OFFSET,
 } selectorField;
 
 extern const uint8_t *const LIDO_SELECTORS[NUM_LIDO_SELECTORS];
@@ -53,7 +45,6 @@ typedef struct lido_parameters_t {
     uint8_t amount_sent[INT256_LENGTH];  // This could be reduced down to 20 bytes if conversion to
                                          // string was done in ETH_QUERY_CONTRAT_UI in
                                          // ETH_QUERY_CONTRAT_UI
-    uint8_t amount_received[INT256_LENGTH];
     uint8_t address_sent[ADDRESS_LENGTH];
 
     char bytes[INT256_LENGTH];
