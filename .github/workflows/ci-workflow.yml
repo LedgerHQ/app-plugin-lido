@@ -48,7 +48,7 @@ jobs:
 
       - name: Build with Clang Static Analyzer
         run: |
-          git config --global --add safe.directory /__w/LedgerHQ-app-plugin-cowswap/LedgerHQ-app-plugin-cowswap
+          git config --global --add safe.directory /__w/LedgerHQ-app-plugin-lido/LedgerHQ-app-plugin-lido
           make clean
           scan-build --use-cc=clang -analyze-headers -enable-checker security -enable-checker unix -enable-checker valist -o scan-build --status-bugs make default
       - uses: actions/upload-artifact@v2
@@ -70,7 +70,7 @@ jobs:
 
       - name: Build with cov-build
         run: |
-          git config --global --add safe.directory /__w/LedgerHQ-app-plugin-cowswap/LedgerHQ-app-plugin-cowswap
+          git config --global --add safe.directory /__w/LedgerHQ-app-plugin-lido/LedgerHQ-app-plugin-lido
           make clean
           cov-build --dir cov-int make default
       - name: Submit the result to Coverity Scan
@@ -82,7 +82,7 @@ jobs:
             --form file=@cov-int.tar.gz \
             --form version=master \
             --form description="Plugin" \
-            https://scan.coverity.com/builds?project=LedgerHQ%2Fapp-plugin-cowswap
+            https://scan.coverity.com/builds?project=LedgerHQ%2Fapp-plugin-lido
         env:
           EMAIL: ${{ secrets.COVERITY_SCAN_EMAIL }}
           TOKEN: ${{ secrets.COVERITY_SCAN_TOKEN }}
@@ -105,18 +105,18 @@ jobs:
           ref: develop
       - name: Build plugin for Nano S
         run: |
-          git config --global --add safe.directory /__w/LedgerHQ-app-plugin-cowswap/LedgerHQ-app-plugin-cowswap
+          git config --global --add safe.directory /__w/LedgerHQ-app-plugin-lido/LedgerHQ-app-plugin-lido
           make clean
           make BOLOS_SDK=$NANOS_SDK
       - name: Move binary to test directory
         run: |
           mkdir -p ./tests/elfs/
-          mv bin/app.elf ./tests/elfs/cowswap_nanos.elf
+          mv bin/app.elf ./tests/elfs/lido_nanos.elf
       - name: Upload plugin binary
         uses: actions/upload-artifact@v3
         with:
           name: binaries
-          path: tests/elfs/cowswap_nanos.elf
+          path: tests/elfs/lido_nanos.elf
 
   job_build_debug_nano_x:
     name: Build debug Nano X
@@ -136,18 +136,18 @@ jobs:
           ref: develop
       - name: Build plugin for Nano X
         run: |
-          git config --global --add safe.directory /__w/LedgerHQ-app-plugin-cowswap/LedgerHQ-app-plugin-cowswap
+          git config --global --add safe.directory /__w/LedgerHQ-app-plugin-lido/LedgerHQ-app-plugin-lido
           make clean
           make BOLOS_SDK=$NANOX_SDK
       - name: Move binary to test directory
         run: |
           mkdir -p ./tests/elfs/
-          mv bin/app.elf ./tests/elfs/cowswap_nanox.elf
+          mv bin/app.elf ./tests/elfs/lido_nanox.elf
       - name: Upload plugin binary
         uses: actions/upload-artifact@v3
         with:
           name: binaries
-          path: tests/elfs/cowswap_nanox.elf
+          path: tests/elfs/lido_nanox.elf
 
   job_build_debug_nano_sp:
     name: Build debug Nano S+
@@ -167,18 +167,18 @@ jobs:
           ref: develop
       - name: Build plugin for Nano S+
         run: |
-          git config --global --add safe.directory /__w/LedgerHQ-app-plugin-cowswap/LedgerHQ-app-plugin-cowswap
+          git config --global --add safe.directory /__w/LedgerHQ-app-plugin-lido/LedgerHQ-app-plugin-lido
           make clean
           make BOLOS_SDK=$NANOSP_SDK
       - name: Move binary to test directory
         run: |
           mkdir -p ./tests/elfs/
-          mv bin/app.elf ./tests/elfs/cowswap_nanosp.elf
+          mv bin/app.elf ./tests/elfs/lido_nanosp.elf
       - name: Upload plugin binary
         uses: actions/upload-artifact@v3
         with:
           name: binaries
-          path: tests/elfs/cowswap_nanosp.elf
+          path: tests/elfs/lido_nanosp.elf
 
   job_build_ethereum_nano_s:
     name: Build Ethereum application for Nano S testing
@@ -194,7 +194,7 @@ jobs:
           submodules: recursive
       - name: Build ethereum
         run: |
-          git config --global --add safe.directory /__w/LedgerHQ-app-plugin-cowswap/LedgerHQ-app-plugin-cowswap
+          git config --global --add safe.directory /__w/LedgerHQ-app-plugin-lido/LedgerHQ-app-plugin-lido
           make clean
           make -j DEBUG=1 BYPASS_SIGNATURES=1 BOLOS_SDK=$NANOS_SDK CHAIN=ethereum ALLOW_DATA=1
       - name: Move binary to test directory
@@ -221,7 +221,7 @@ jobs:
           submodules: recursive
       - name: Build ethereum
         run: |
-          git config --global --add safe.directory /__w/LedgerHQ-app-plugin-cowswap/LedgerHQ-app-plugin-cowswap
+          git config --global --add safe.directory /__w/LedgerHQ-app-plugin-lido/LedgerHQ-app-plugin-lido
           make clean
           make -j DEBUG=1 BYPASS_SIGNATURES=1 BOLOS_SDK=$NANOX_SDK CHAIN=ethereum ALLOW_DATA=1
       - name: Move binary to test directory
@@ -248,7 +248,7 @@ jobs:
           submodules: recursive
       - name: Build ethereum
         run: |
-          git config --global --add safe.directory /__w/LedgerHQ-app-plugin-cowswap/LedgerHQ-app-plugin-cowswap
+          git config --global --add safe.directory /__w/LedgerHQ-app-plugin-lido/LedgerHQ-app-plugin-lido
           make clean
           make -j DEBUG=1 BYPASS_SIGNATURES=1 BOLOS_SDK=$NANOSP_SDK CHAIN=ethereum ALLOW_DATA=1
       - name: Move binary to test directory
