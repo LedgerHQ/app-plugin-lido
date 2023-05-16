@@ -23,12 +23,19 @@ static void set_send_ui(ethQueryContractUI_t *msg, lido_parameters_t *context) {
             break;
         case REQUEST_WITHDRAWALS_WITH_PERMIT:
             strlcpy(msg->title, "Value", msg->titleLength);
+            ticker = STETH_TICKER;
             break;
         default:
             PRINTF("Unhandled selector Index: %d\n", context->selectorIndex);
             msg->result = ETH_PLUGIN_RESULT_ERROR;
             return;
     }
+
+    // set network ticker (ETH, BNB, etc) if needed
+    if (ADDRESS_IS_NETWORK_TOKEN(context->contract_address_sent)) {
+        strlcpy(context->ticker_sent, msg->network_ticker, sizeof(context->ticker_sent));
+    }
+
     switch (context->selectorIndex) {
         case SUBMIT:
             return amountToString(context->amount_sent,
@@ -39,20 +46,13 @@ static void set_send_ui(ethQueryContractUI_t *msg, lido_parameters_t *context) {
                    msg->msgLength);
         case UNWRAP:
         case WRAP: 
+        case REQUEST_WITHDRAWALS_WITH_PERMIT:
             return amountToString(context->amount_sent,
                    INT256_LENGTH,
                    decimals,
                    ticker,
                    msg->msg,
                    msg->msgLength);
-        case REQUEST_WITHDRAWALS_WITH_PERMIT:
-            amountToString(context->amount_sent,
-                           INT256_LENGTH,
-                           context->decimals_sent,
-                           context->ticker_sent,
-                           msg->msg,
-                           msg->msgLength);
-            break;
     }
 }
 

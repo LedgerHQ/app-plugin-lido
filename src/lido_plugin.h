@@ -17,8 +17,16 @@
 #define WSTETH_TICKER   "wstETH"
 #define WSTETH_DECIMALS WEI_TO_ETHER
 
-#define TOKEN_SENT_FOUND     1
-#define TOKEN_RECEIVED_FOUND 1 << 1
+#define TOKEN_SENT_FOUND     1       // REMOVE IF NOT USED
+#define TOKEN_RECEIVED_FOUND 1 << 1  // REMOVE IF NOT USED
+
+extern const uint8_t PLUGIN_ETH_ADDRESS[ADDRESS_LENGTH];  // REMOVE IF NOT USED
+extern const uint8_t NULL_ETH_ADDRESS[ADDRESS_LENGTH];    // REMOVE IF NOT USED
+
+// Returns 1 if corresponding address is the address for the chain token (ETH, BNB, MATIC,
+#define ADDRESS_IS_NETWORK_TOKEN(_addr)                    \
+    (!memcmp(_addr, PLUGIN_ETH_ADDRESS, ADDRESS_LENGTH) || \
+     !memcmp(_addr, NULL_ETH_ADDRESS, ADDRESS_LENGTH))
 
 typedef enum {
     SUBMIT,
@@ -55,9 +63,11 @@ typedef struct lido_parameters_t {
                                          // string was done in ETH_QUERY_CONTRAT_UI in
                                          // ETH_QUERY_CONTRAT_UI
     uint8_t address_sent[ADDRESS_LENGTH];
+    uint8_t contract_address_sent[ADDRESS_LENGTH];
+    uint8_t contract_address_received[ADDRESS_LENGTH];
     char ticker_sent[MAX_TICKER_LEN];
     char ticker_received[MAX_TICKER_LEN];
-    // 32 + 20 + 11 + 11 = 116
+    // 32 + 60 + 11 + 11 = 114
                                         
     uint16_t offset;
     uint16_t checkpoint;
@@ -71,8 +81,8 @@ typedef struct lido_parameters_t {
     uint8_t next_param;
     uint8_t selectorIndex;
     uint8_t valid;
-    // 1 * 4 = 4
-    // 116 + 8 + 5 = 129 --- MAX is 160 (5 * 32)
+    // 1 * 8 = 8
+    // 114 + 8 + 8 = 130 --- MAX is 160 (5 * 32)
 } lido_parameters_t;
 
 _Static_assert(sizeof(lido_parameters_t) <= 5 * 32, "Structure of parameters too big.");
@@ -83,3 +93,13 @@ void handle_init_contract(void *parameters);
 void handle_finalize(void *parameters);
 void handle_provide_token(void *parameters);
 void handle_query_contract_id(void *parameters);
+
+static inline void printf_hex_array(const char *title __attribute__((unused)),
+                                    size_t len __attribute__((unused)),
+                                    const uint8_t *data __attribute__((unused))) {
+    PRINTF(title);
+    for (size_t i = 0; i < len; ++i) {
+        PRINTF("%02x", data[i]);
+    };
+    PRINTF("\n");
+}

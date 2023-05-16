@@ -98,6 +98,7 @@ __attribute__((section(".boot"))) int main(int arg0) {
         CATCH_OTHER(e) {
             switch (e) {
                 // These exceptions are only generated on handle_query_contract_ui()
+                // fall through
                 case 0x6502:
                 case EXCEPTION_OVERFLOW:
                     handle_query_ui_exception((unsigned int *) arg0);
