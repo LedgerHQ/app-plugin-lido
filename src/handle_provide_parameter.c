@@ -57,7 +57,7 @@ static void handle_permit(ethPluginProvideParameter_t *msg, lido_parameters_t *c
     }
 }
 
-static void handle_request_withdrawals(ethPluginProvideParameter_t *msg, 
+static void handle_request_withdrawals(ethPluginProvideParameter_t *msg,
                                        lido_parameters_t *context) {
     switch (context->next_param) {
         case ADDRESS_SENT:
@@ -140,5 +140,5 @@ void handle_provide_parameter(void *parameters) {
         }
         // set valid to true after parsing all parameters
         context->valid = 1;
-        }
+    }
 }

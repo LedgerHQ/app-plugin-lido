@@ -15,7 +15,7 @@ void handle_finalize(void *parameters) {
     lido_parameters_t *context = (lido_parameters_t *) msg->pluginContext;
     PRINTF("handle finalize\n");
     if (context->valid) {
-       switch (context->selectorIndex) {
+        switch (context->selectorIndex) {
             case SUBMIT:
             case UNWRAP:
             case WRAP:

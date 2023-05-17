@@ -35,7 +35,7 @@ static void set_send_ui(ethQueryContractUI_t *msg, lido_parameters_t *context) {
         default:
             PRINTF("Unhandled selector Index: %d\n", context->selectorIndex);
             msg->result = ETH_PLUGIN_RESULT_ERROR;
-            return;
+            break;
     }
 
     // set network ticker (ETH, BNB, etc) if needed
@@ -89,7 +89,7 @@ static void set_address_ui(ethQueryContractUI_t *msg, lido_parameters_t *context
         default:
             PRINTF("Unhandled selector Index: %d\n", context->selectorIndex);
             msg->result = ETH_PLUGIN_RESULT_ERROR;
-            return;
+            break;
     }
 
     msg->msg[0] = '0';
@@ -163,6 +163,6 @@ void handle_query_contract_ui(void *parameters) {
         default:
             PRINTF("Received an invalid screenIndex %d\n", screen);
             msg->result = ETH_PLUGIN_RESULT_ERROR;
-            return;
+            break;
     }
 }

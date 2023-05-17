@@ -34,7 +34,7 @@ void handle_query_contract_id(void *parameters) {
         default:
             PRINTF("Selector Index :%d not supported\n", context->selectorIndex);
             msg->result = ETH_PLUGIN_RESULT_ERROR;
-            return;
+            break;
     }
 
     msg->result = ETH_PLUGIN_RESULT_OK;

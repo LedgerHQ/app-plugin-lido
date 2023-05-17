@@ -72,11 +72,9 @@ typedef struct lido_parameters_t {
     char ticker_sent[MAX_TICKER_LEN];
     char ticker_received[MAX_TICKER_LEN];
     // 32 + 3 * 20 + 2 * 11 = 114
-                           
     uint16_t offset;
     uint16_t checkpoint;
     // 2 * 4 = 8
-
     uint8_t tokens_found;
     uint8_t decimals_sent;
     uint8_t decimals_received;
