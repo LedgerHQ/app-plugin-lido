@@ -16,20 +16,20 @@ void handle_finalize(void *parameters) {
     PRINTF("handle finalize\n");
     if (context->valid) {
        switch (context->selectorIndex) {
-        case SUBMIT:
-        case UNWRAP:
-        case WRAP:
-        case CLAIM_WITHDRAWALS:
-            msg->numScreens = 1;
-            break;
-        case REQUEST_WITHDRAWALS_WITH_PERMIT:
-        case REQUEST_WITHDRAWALS_WSTETH_WITH_PERMIT:
-        case REQUEST_WITHDRAWALS:
-        case REQUEST_WITHDRAWALS_WSTETH:
-            msg->numScreens = 2;
-            break;
-        default:
-            break;
+            case SUBMIT:
+            case UNWRAP:
+            case WRAP:
+            case CLAIM_WITHDRAWALS:
+                msg->numScreens = 1;
+                break;
+            case REQUEST_WITHDRAWALS_WITH_PERMIT:
+            case REQUEST_WITHDRAWALS_WSTETH_WITH_PERMIT:
+            case REQUEST_WITHDRAWALS:
+            case REQUEST_WITHDRAWALS_WSTETH:
+                msg->numScreens = 2;
+                break;
+            default:
+                break;
         }
         msg->uiType = ETH_UI_TYPE_GENERIC;
         msg->result = ETH_PLUGIN_RESULT_OK;

@@ -7,9 +7,7 @@ static void handle_amount_sent(ethPluginProvideParameter_t *msg, lido_parameters
 }
 
 static void handle_address_sent(ethPluginProvideParameter_t *msg, lido_parameters_t *context) {
-    copy_address(context->address_sent,
-                 msg->parameter,
-                 sizeof(context->address_sent));
+    copy_address(context->address_sent, msg->parameter, sizeof(context->address_sent));
 }
 
 static void handle_submit(ethPluginProvideParameter_t *msg, lido_parameters_t *context) {
@@ -59,7 +57,8 @@ static void handle_permit(ethPluginProvideParameter_t *msg, lido_parameters_t *c
     }
 }
 
-static void handle_request_withdrawals(ethPluginProvideParameter_t *msg, lido_parameters_t *context) {
+static void handle_request_withdrawals(ethPluginProvideParameter_t *msg, 
+                                       lido_parameters_t *context) {
     switch (context->next_param) {
         case ADDRESS_SENT:
             handle_address_sent(msg, context);
@@ -102,7 +101,7 @@ void handle_provide_parameter(void *parameters) {
 
     msg->result = ETH_PLUGIN_RESULT_OK;
 
- // If not used remove from here
+    // If not used remove from here
     if (context->skip) {
         // Skip this step, and don't forget to decrease skipping counter.
         context->skip--;
@@ -113,7 +112,7 @@ void handle_provide_parameter(void *parameters) {
                    context->checkpoint,
                    msg->parameterOffset);
             return;
-        }    
+        }
         context->offset = 0;
         switch (context->selectorIndex) {
             case SUBMIT:
@@ -138,7 +137,7 @@ void handle_provide_parameter(void *parameters) {
                 PRINTF("Selector Index %d not supported\n", context->selectorIndex);
                 msg->result = ETH_PLUGIN_RESULT_ERROR;
                 break;
-            }
+        }
         // set valid to true after parsing all parameters
         context->valid = 1;
         }

@@ -23,7 +23,7 @@ void handle_init_contract(void *parameters) {
             break;
         }
     }
-    context->valid = 0; // init on false for security
+    context->valid = 0;  // init on false for security
     // Set `next_param` to be the first field we expect to parse.
     switch (context->selectorIndex) {
         case SUBMIT:
@@ -37,7 +37,7 @@ void handle_init_contract(void *parameters) {
         case REQUEST_WITHDRAWALS_WSTETH_WITH_PERMIT:
         case REQUEST_WITHDRAWALS:
         case REQUEST_WITHDRAWALS_WSTETH:
-            context->skip++; // skip offset
+            context->skip++;  // skip offset
             context->next_param = ADDRESS_SENT;
             break;
         case CLAIM_WITHDRAWALS:

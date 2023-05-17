@@ -54,21 +54,21 @@ static void set_send_ui(ethQueryContractUI_t *msg, lido_parameters_t *context) {
         case UNWRAP:
         case WRAP:
             return amountToString(context->amount_sent,
-                                           INT256_LENGTH,
-                                           decimals,
-                                           ticker,
-                                           msg->msg,
-                                           msg->msgLength);
+                                  INT256_LENGTH,
+                                  decimals,
+                                  ticker,
+                                  msg->msg,
+                                  msg->msgLength);
         case REQUEST_WITHDRAWALS_WITH_PERMIT:
         case REQUEST_WITHDRAWALS_WSTETH_WITH_PERMIT:
         case REQUEST_WITHDRAWALS:
         case REQUEST_WITHDRAWALS_WSTETH:
             return amountToString(context->amount_sent,
-                                           INT256_LENGTH,
-                                           context->decimals_sent,
-                                           ticker,
-                                           msg->msg,
-                                           msg->msgLength);
+                                  INT256_LENGTH,
+                                  context->decimals_sent,
+                                  ticker,
+                                  msg->msg,
+                                  msg->msgLength);
         case CLAIM_WITHDRAWALS:
             uint256_to_decimal(context->amount_sent, INT256_LENGTH, msg->msg, msg->msgLength);
             break;
@@ -127,7 +127,7 @@ static screens_t get_screen(ethQueryContractUI_t *msg,
                 case 1:
                     return SEND_SCREEN;
                 default:
-                    return ERROR;     
+                    return ERROR;
             }
             break;
         case CLAIM_WITHDRAWALS:
@@ -135,7 +135,7 @@ static screens_t get_screen(ethQueryContractUI_t *msg,
                 case 0:
                     return SEND_SCREEN;
                 default:
-                    return ERROR;     
+                    return ERROR; 
             }
             break;
         default:
