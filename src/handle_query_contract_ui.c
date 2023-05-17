@@ -3,7 +3,7 @@
 // Set UI for the "Send" screen.
 static void set_send_ui(ethQueryContractUI_t *msg, lido_parameters_t *context) {
     uint8_t decimals = 0;
-    char *ticker;
+    const char *ticker;
 
     switch (context->selectorIndex) {
         case SUBMIT:
