@@ -135,7 +135,7 @@ static screens_t get_screen(ethQueryContractUI_t *msg,
                 case 0:
                     return SEND_SCREEN;
                 default:
-                    return ERROR; 
+                    return ERROR;
             }
             break;
         default:
