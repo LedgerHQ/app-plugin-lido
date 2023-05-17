@@ -1,7 +1,7 @@
 # Badges
 
-[![Code style check](https://github.com/blooo-io/LedgerHQ-app-plugin-lido/actions/workflows/lint-workflow.yml/badge.svg?branch=main)](https://github.com/blooo-io/LedgerHQ-app-plugin-lido/actions/workflows/lint-workflow.yml)
-[![Compilation & tests](https://github.com/blooo-io/LedgerHQ-app-plugin-lido/actions/workflows/ci-workflow.yml/badge.svg?branch=main)](https://github.com/blooo-io/LedgerHQ-app-plugin-lido/actions/workflows/ci-workflow.yml)
+[![Code style check](https://github.com/blooo-io/LedgerHQ-app-plugin-lido/actions/workflows/lint-workflow.yml/badge.svg)](https://github.com/blooo-io/LedgerHQ-app-plugin-lido/actions/workflows/lint-workflow.yml)
+[![Compilation & tests](https://github.com/blooo-io/LedgerHQ-app-plugin-lido/actions/workflows/ci-workflow.yml/badge.svg)](https://github.com/blooo-io/LedgerHQ-app-plugin-lido/actions/workflows/ci-workflow.yml)
 
 # Ledger Lido Plugin
 
