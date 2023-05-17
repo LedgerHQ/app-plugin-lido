@@ -32,18 +32,19 @@ Smart contracts covered by this plugin are:
 
 | Network  | Version | Smart Contract                               |
 | -------- | ------- | -------------------------------------------- |
-| Goerli | V8      | `0xCF117961421cA9e546cD7f50bC73abCdB3039533` |
-
+| Goerli   | V8      | `0xCF117961421cA9e546cD7f50bC73abCdB3039533` |
+| Ethereum | V4      | `0xae7ab96520de3a18e5e111b5eaab095312d7fe84` |
+| Ethereum | V6      | `0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0` |
 
 On these smart contracts, the functions covered by this plugin are:
 
-|    Function   | Selector  | Displayed Parameters |
-| ---           | ---       | --- |
-| Claim Withdrawals | 0xe3afe0a3| <code>uint256[] _requestIds</code> |
-| Request Withdrawals     | 0xd6681042| <table>  <tbody> <tr><td><code>address _owner</code></td></tr>  <tr><td><code>uint256[] _amounts</code></td></tr> </tbody> </table>|
-| Request Withdrawals wstETH     | 0x19aa6257| <table>  <tbody> <tr><td><code>address _owner</code></td></tr>  <tr><td><code>uint256[] _amounts</code></td></tr> </tbody> </table> |
-| Request Withdrawals With Permit     | 0xacf41e4d| <table>  <tbody> <tr><td><code>address _owner</code></td></tr>  <tr><td><code>uint256[] _amounts</code></td></tr> </tbody> </table> |
-| Request Withdrawals wstETH With Permit | 0x7951b76f | <table>  <tbody> <tr><td><code>address _owner</code></td></tr>  <tr><td><code>uint256[] _amounts</code></td></tr> </tbody> </table>
+| Function                               | Selector   | Displayed Parameters                                                                                                                |
+| -------------------------------------- | ---------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| Claim Withdrawals                      | 0xe3afe0a3 | <code>uint256[] \_requestIds</code>                                                                                                 |
+| Request Withdrawals                    | 0xd6681042 | <table> <tbody> <tr><td><code>address \_owner</code></td></tr> <tr><td><code>uint256[] \_amounts</code></td></tr> </tbody> </table> |
+| Request Withdrawals wstETH             | 0x19aa6257 | <table> <tbody> <tr><td><code>address \_owner</code></td></tr> <tr><td><code>uint256[] \_amounts</code></td></tr> </tbody> </table> |
+| Request Withdrawals With Permit        | 0xacf41e4d | <table> <tbody> <tr><td><code>address \_owner</code></td></tr> <tr><td><code>uint256[] \_amounts</code></td></tr> </tbody> </table> |
+| Request Withdrawals wstETH With Permit | 0x7951b76f | <table> <tbody> <tr><td><code>address \_owner</code></td></tr> <tr><td><code>uint256[] \_amounts</code></td></tr> </tbody> </table> |
 
 ## Build
 

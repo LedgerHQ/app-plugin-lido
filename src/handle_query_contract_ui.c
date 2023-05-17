@@ -8,8 +8,6 @@ static void set_send_ui(ethQueryContractUI_t *msg, lido_parameters_t *context) {
     switch (context->selectorIndex) {
         case SUBMIT:
             strlcpy(msg->title, "Stake", msg->titleLength);
-            decimals = WEI_TO_ETHER;
-            ticker = "ETH";
             break;
         case UNWRAP:
             strlcpy(msg->title, "Unwrap", msg->titleLength);
@@ -47,30 +45,30 @@ static void set_send_ui(ethQueryContractUI_t *msg, lido_parameters_t *context) {
 
     switch (context->selectorIndex) {
         case SUBMIT:
-            return amountToString(context->amount_sent,
-                   msg->pluginSharedRO->txContent->value.length,
-                   decimals,
-                   ticker,
-                   msg->msg,
-                   msg->msgLength);
+            return amountToString(msg->pluginSharedRO->txContent->value.value,
+                                  msg->pluginSharedRO->txContent->value.length,
+                                  WEI_TO_ETHER,
+                                  context->ticker_sent,
+                                  msg->msg,
+                                  msg->msgLength);
         case UNWRAP:
         case WRAP:
             return amountToString(context->amount_sent,
-                   INT256_LENGTH,
-                   decimals,
-                   ticker,
-                   msg->msg,
-                   msg->msgLength);
+                                           INT256_LENGTH,
+                                           decimals,
+                                           ticker,
+                                           msg->msg,
+                                           msg->msgLength);
         case REQUEST_WITHDRAWALS_WITH_PERMIT:
         case REQUEST_WITHDRAWALS_WSTETH_WITH_PERMIT:
         case REQUEST_WITHDRAWALS:
         case REQUEST_WITHDRAWALS_WSTETH:
             return amountToString(context->amount_sent,
-                   INT256_LENGTH,
-                   context->decimals_sent,
-                   ticker,
-                   msg->msg,
-                   msg->msgLength);
+                                           INT256_LENGTH,
+                                           context->decimals_sent,
+                                           ticker,
+                                           msg->msg,
+                                           msg->msgLength);
         case CLAIM_WITHDRAWALS:
             uint256_to_decimal(context->amount_sent, INT256_LENGTH, msg->msg, msg->msgLength);
             break;

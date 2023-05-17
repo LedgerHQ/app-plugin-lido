@@ -47,7 +47,6 @@ typedef enum {
 typedef enum {
     AMOUNT_SENT,
     ADDRESS_SENT,
-    REFERRAL,
     NONE,
 } selectorField;
 
@@ -71,7 +70,7 @@ typedef struct lido_parameters_t {
     uint8_t contract_address_received[ADDRESS_LENGTH];
     char ticker_sent[MAX_TICKER_LEN];
     char ticker_received[MAX_TICKER_LEN];
-    // 32 + 60 + 11 + 11 = 114
+    // 32 + 3 * 20 + 2 * 11 = 114
                                         
     uint16_t offset;
     uint16_t checkpoint;

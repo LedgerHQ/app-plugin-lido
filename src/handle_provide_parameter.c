@@ -23,13 +23,6 @@ static void handle_submit(ethPluginProvideParameter_t *msg, lido_parameters_t *c
     }
 }
 
-// Similar to handle_amount_sent but takes the amount from the transaction data (in ETH).
-static void copy_eth_amount(ethPluginProvideParameter_t *msg, lido_parameters_t *context) {
-    memcpy(context->amount_sent,
-           &msg->pluginSharedRO->txContent->value.value,
-           msg->pluginSharedRO->txContent->value.length);
-}
-
 static void handle_wrap(ethPluginProvideParameter_t *msg, lido_parameters_t *context) {
     // ABI for wrap is: wrap(uint256 amount)
     // ABI for unwrap is: unwrap(uint256 amount)
@@ -125,7 +118,6 @@ void handle_provide_parameter(void *parameters) {
         switch (context->selectorIndex) {
             case SUBMIT:
                 handle_submit(msg, context);
-                copy_eth_amount(msg, context);
                 break;
             case UNWRAP:
             case WRAP:
@@ -139,7 +131,6 @@ void handle_provide_parameter(void *parameters) {
                 handle_claim_withdrawals(msg, context);
                 break;
             case REQUEST_WITHDRAWALS:
-            case REQUEST_WITHDRAWALS_WSTETH:
                 handle_request_withdrawals(msg, context);
                 break;
             default:
