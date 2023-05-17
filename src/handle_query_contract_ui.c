@@ -49,15 +49,23 @@ static void set_send_ui(ethQueryContractUI_t *msg, lido_parameters_t *context) {
                    msg->msg,
                    msg->msgLength);
         case UNWRAP:
-        case WRAP: 
-        case REQUEST_WITHDRAWALS_WITH_PERMIT:
-        case REQUEST_WITHDRAWALS_WSTETH_WITH_PERMIT:
+        case WRAP:
             return amountToString(context->amount_sent,
                    INT256_LENGTH,
                    decimals,
                    ticker,
                    msg->msg,
                    msg->msgLength);
+        case REQUEST_WITHDRAWALS_WITH_PERMIT:
+        case REQUEST_WITHDRAWALS_WSTETH_WITH_PERMIT:
+            return amountToString(context->amount_sent,
+                   INT256_LENGTH,
+                   context->decimals_sent,
+                   ticker,
+                   msg->msg,
+                   msg->msgLength);
+        default:
+            break;
     }
 }
 

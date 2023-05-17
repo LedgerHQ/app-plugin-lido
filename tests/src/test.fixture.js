@@ -143,7 +143,6 @@ async function processTransaction(eth, sim, steps, label, rawTxHex, srlTx = "") 
   let serializedTx;
   if (srlTx == "") serializedTx = txFromEtherscan(rawTxHex);
   else serializedTx = srlTx;
-  console.warn(config);
   const resolution = await ledgerService
     .resolveTransaction(
       serializedTx,

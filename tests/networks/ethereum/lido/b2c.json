@@ -9,13 +9,7 @@
           "erc20OfInterest": [],
           "method": "requestWithdrawalsWithPermit",
           "plugin": "lido"
-        }
-      }
-    },
-    {
-      "address": "0xcf117961421ca9e546cd7f50bc73abcdb3039533",
-      "contractName": "OssifiableProxy",
-      "selectors": {
+        },
         "0x7951b76f": {
           "erc20OfInterest": [],
           "method": "requestWithdrawalsWstETHWithPermit",
