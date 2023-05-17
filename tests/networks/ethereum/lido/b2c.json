@@ -19,6 +19,16 @@
           "erc20OfInterest": [],
           "method": "claimWithdrawals",
           "plugin": "lido"
+        },
+        "0xd6681042": {
+          "erc20OfInterest": [],
+          "method": "requestWithdrawals",
+          "plugin": "lido"
+        },
+        "0x19aa6257": {
+          "erc20OfInterest": [],
+          "method": "requestWithdrawalsWstETH",
+          "plugin": "lido"
         }
       }
     }
