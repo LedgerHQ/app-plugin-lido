@@ -68,7 +68,8 @@ static void set_send_ui(ethQueryContractUI_t *msg, lido_parameters_t *context) {
                    msg->msg,
                    msg->msgLength);
         case CLAIM_WITHDRAWALS:
-            return uint256_to_decimal(context->amount_sent, INT256_LENGTH, msg->msg, msg->msgLength)
+            uint256_to_decimal(context->amount_sent, INT256_LENGTH, msg->msg, msg->msgLength);
+            break;
         default:
             break;
     }
