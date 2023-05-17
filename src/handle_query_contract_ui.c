@@ -25,6 +25,10 @@ static void set_send_ui(ethQueryContractUI_t *msg, lido_parameters_t *context) {
             strlcpy(msg->title, "Value", msg->titleLength);
             ticker = STETH_TICKER;
             break;
+        case REQUEST_WITHDRAWALS_WSTETH_WITH_PERMIT:
+            strlcpy(msg->title, "Value", msg->titleLength);
+            ticker = WSTETH_TICKER;
+            break;
         default:
             PRINTF("Unhandled selector Index: %d\n", context->selectorIndex);
             msg->result = ETH_PLUGIN_RESULT_ERROR;
@@ -47,6 +51,7 @@ static void set_send_ui(ethQueryContractUI_t *msg, lido_parameters_t *context) {
         case UNWRAP:
         case WRAP: 
         case REQUEST_WITHDRAWALS_WITH_PERMIT:
+        case REQUEST_WITHDRAWALS_WSTETH_WITH_PERMIT:
             return amountToString(context->amount_sent,
                    INT256_LENGTH,
                    decimals,
@@ -60,6 +65,7 @@ static void set_send_ui(ethQueryContractUI_t *msg, lido_parameters_t *context) {
 static void set_address_ui(ethQueryContractUI_t *msg, lido_parameters_t *context) {
     switch (context->selectorIndex) {
         case REQUEST_WITHDRAWALS_WITH_PERMIT:
+        case REQUEST_WITHDRAWALS_WSTETH_WITH_PERMIT:
             strlcpy(msg->title, "Owner", msg->titleLength);
             break;
         default:
@@ -94,6 +100,7 @@ static screens_t get_screen(ethQueryContractUI_t *msg,
                     return ERROR;
             }
         case REQUEST_WITHDRAWALS_WITH_PERMIT:
+        case REQUEST_WITHDRAWALS_WSTETH_WITH_PERMIT:
             switch (index) {
                 case 0:
                     return ADDRESS_SCREEN;

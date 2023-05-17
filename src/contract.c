@@ -16,6 +16,9 @@ static const uint8_t LIDO_UNWRAP_WSTETH_SELECTOR[SELECTOR_SIZE] = {0xde, 0x0e, 0
 // exemple : https://goerli.etherscan.io/tx/0x1e3c618b0ec519dbafff8e00758e83de9b0c3c9f067e1b441886ba5fc828213c
 static const uint8_t LIDO_REQUEST_WITHDRAWALS_WITH_PERMIT_SELECTOR[SELECTOR_SIZE] = {0xac, 0xf4, 0x1e, 0x4d};
 
+// Function: requestWithdrawalsWstETHWithPermit(uint256[] _amounts,address _owner,tuple _permit)
+// exemple : https://goerli.etherscan.io/tx/0xe34b52441efa82887c87641316cae369567f74d5689710bc5f5123ab8e92ba9e
+static const uint8_t LIDO_REQUEST_WITHDRAWALS_WSTETH_WITH_PERMIT_SELECTOR[SELECTOR_SIZE] = {0x79, 0x51, 0xb7, 0x6f};
 
 // Array of all the different lido selectors.
 const uint8_t *const LIDO_SELECTORS[NUM_LIDO_SELECTORS] = {
@@ -23,6 +26,7 @@ const uint8_t *const LIDO_SELECTORS[NUM_LIDO_SELECTORS] = {
     LIDO_WRAP_STETH_SELECTOR,
     LIDO_UNWRAP_WSTETH_SELECTOR,
     LIDO_REQUEST_WITHDRAWALS_WITH_PERMIT_SELECTOR,
+    LIDO_REQUEST_WITHDRAWALS_WSTETH_WITH_PERMIT_SELECTOR
 };
 
 // Ask dummy address ETH

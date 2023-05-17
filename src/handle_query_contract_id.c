@@ -19,6 +19,9 @@ void handle_query_contract_id(void *parameters) {
         case REQUEST_WITHDRAWALS_WITH_PERMIT:
             strlcpy(msg->version, "Request withdrawals with permit", msg->versionLength);
             break;
+        case REQUEST_WITHDRAWALS_WSTETH_WITH_PERMIT:
+            strlcpy(msg->version, "Request withdrawals wstETH with permit", msg->versionLength);
+            break;
         default:
             PRINTF("Selector Index :%d not supported\n", context->selectorIndex);
             msg->result = ETH_PLUGIN_RESULT_ERROR;

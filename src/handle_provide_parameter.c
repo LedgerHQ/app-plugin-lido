@@ -99,6 +99,7 @@ void handle_provide_parameter(void *parameters) {
                 handle_wrap(msg, context);
                 break;
             case REQUEST_WITHDRAWALS_WITH_PERMIT:
+            case REQUEST_WITHDRAWALS_WSTETH_WITH_PERMIT:
                 handle_permit(msg, context);
                 break;
             default:
