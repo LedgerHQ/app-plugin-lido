@@ -1,36 +1,79 @@
-# app-plugin-lido
+# Badges
 
-Lightweight plugin that goes hand-in-hand with the [ethereum app](https://github.com/LedgerHQ/app-ethereum).
-This plugin provides support for the following contracts:
+[![Code style check](https://github.com/blooo-io/LedgerHQ-app-plugin-lido/actions/workflows/lint-workflow.yml/badge.svg?branch=main)](https://github.com/blooo-io/LedgerHQ-app-plugin-lido/actions/workflows/lint-workflow.yml)
+[![Compilation & tests](https://github.com/blooo-io/LedgerHQ-app-plugin-lido/actions/workflows/ci-workflow.yml/badge.svg?branch=main)](https://github.com/blooo-io/LedgerHQ-app-plugin-lido/actions/workflows/ci-workflow.yml)
 
-[wstETH](https://etherscan.io/address/0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0) for wrapping and unwrapping wsteth.
-[stETH](https://etherscan.io/address/0xae7ab96520de3a18e5e111b5eaab095312d7fe84) for staking ETH.
+# Ledger Lido Plugin
 
-## Running tests
+This is a plugin for the Ethereum application which helps parsing and displaying relevant information when signing a Lido transaction.
 
-First [install yarn](https://classic.yarnpkg.com/en/docs/install/#debian-stable).
-Then, install js dependancies:
-```
-cd tests
-yarn install
-```
+## Prerequisite
 
-Then you can run the tests with:
-```
-yarn test
+Clone the plugin to a new folder.
+
+```shell
+git clone https://github.com/blooo-io/LedgerHQ-app-plugin-lido.git
 ```
 
-### Building test elfs
-By default, tests are run against precompiled binaries located in `tests/elfs`.
-If you want to run the test suite against your changes in the plugin codebase (or against changes in your app-ethereum repository), there is a helper script to rebuild the elfs required by tests and to move them at the right place with the right name.
-Open `tests/build_local_test_elfs.sh` and add your BOLOS SDKs path to `NANOS_SDK` and `NANOX_SDK`, and the path to the ethereum repo you would like to use to `APP_ETHEREUM`.
-Then, run it from within the `tests` folder:
-```
-cd test
-./build_local_test_elfs.sh
+Then in the same folder clone two more repositories, which is the plugin-tools and app-ethereum.
+
+```shell
+git clone https://github.com/LedgerHQ/plugin-tools.git                          #plugin-tools
+git clone --recurse-submodules https://github.com/LedgerHQ/app-ethereum.git     #app-ethereum
 ```
 
-You can then run the tests normaly with:
+## Documentation
+
+Need more information about the interface, the architecture, or general stuff about ethereum plugins? You can find more about them in the [ethereum-app documentation](https://github.com/LedgerHQ/app-ethereum/blob/master/doc/ethapp_plugins.asc).
+
+## Smart Contracts
+
+Smart contracts covered by this plugin are:
+
+| Network  | Version | Smart Contract                               |
+| -------- | ------- | -------------------------------------------- |
+| Goerli | V8      | `0xCF117961421cA9e546cD7f50bC73abCdB3039533` |
+
+
+On these smart contracts, the functions covered by this plugin are:
+
+|    Function   | Selector  | Displayed Parameters |
+| ---           | ---       | --- |
+| Claim Withdrawals | 0xe3afe0a3| <code>uint256[] _requestIds</code> |
+| Request Withdrawals     | 0xd6681042| <table>  <tbody> <tr><td><code>address _owner</code></td></tr>  <tr><td><code>uint256[] _amounts</code></td></tr> </tbody> </table>|
+| Request Withdrawals wstETH     | 0x19aa6257| <table>  <tbody> <tr><td><code>address _owner</code></td></tr>  <tr><td><code>uint256[] _amounts</code></td></tr> </tbody> </table> |
+| Request Withdrawals With Permit     | 0xacf41e4d| <table>  <tbody> <tr><td><code>address _owner</code></td></tr>  <tr><td><code>uint256[] _amounts</code></td></tr> </tbody> </table> |
+| Request Withdrawals wstETH With Permit | 0x7951b76f | <table>  <tbody> <tr><td><code>address _owner</code></td></tr>  <tr><td><code>uint256[] _amounts</code></td></tr> </tbody> </table>
+
+## Build
+
+Go to the plugin-tools folder and run the "./start" script.
+
+```shell
+cd plugin-tools  # go to plugin folder
+./start.sh       # run the script start.sh
 ```
-yarn test
+
+The script will build a docker image and attach a console.
+When the docker image is running go to the "LedgerHQ-app-plugin-lido" folder and build the ".elf" files.
+
+```shell
+cd LedgerHQ-app-plugin-lido/tests       # go to the tests folder in LedgerHQ-app-plugin-lido
+./build_local_test_elfs.sh              # run the script build_local_test_elfs.sh
 ```
+
+## Tests
+
+To test the plugin go to the tests folder from the "LedgerHQ-app-plugin-lido" and run the script "test"
+
+```shell
+cd LedgerHQ-app-plugin-lido/tests       # go to the tests folder in LedgerHQ-app-plugin-lido
+yarn test                       # run the script test
+```
+
+## Continuous Integration
+
+The flow processed in [GitHub Actions](https://github.com/features/actions) is the following:
+
+- Code formatting with [clang-format](http://clang.llvm.org/docs/ClangFormat.html)
+- Compilation of the application for Ledger Nano S in [ledger-app-builder](https://github.com/LedgerHQ/ledger-app-builder)

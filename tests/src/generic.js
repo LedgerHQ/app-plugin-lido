@@ -3,21 +3,25 @@ import fs from "fs";
 const sim_options_nanos = {
   model: "nanos",
   logging: true,
-  start_delay: 2000,
-  X11: true,
+  X11: false,
+  startDelay: 15000,
+  startText: "Ready",
+  approveKeyword: "APPROVE",
+  rejectKeyword: "REJECT",
   custom: "",
-  startText: "is ready",
+  caseSensitive: false,
+  sdk: "",
 };
 
 const sim_options_nanox = {
   model: "nanox",
   logging: true,
-  start_delay: 2000,
-  X11: true,
-  custom: "",
-  startText: "is ready",
+  X11: false,
+  startDelay: 15000,
+  startText: "Ready",
   approveKeyword: "APPROVE",
   rejectKeyword: "REJECT",
+  custom: "",
   caseSensitive: false,
   sdk: "",
 };
