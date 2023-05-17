@@ -76,8 +76,6 @@ static void handle_request_withdrawals(ethPluginProvideParameter_t *msg, lido_pa
         case AMOUNT_SENT:
             handle_amount_sent(msg, context);
             break;
-        case NONE:
-            break;
         default:
             PRINTF("Param not supported\n");
             msg->result = ETH_PLUGIN_RESULT_ERROR;

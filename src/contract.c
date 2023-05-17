@@ -20,13 +20,13 @@ static const uint8_t LIDO_REQUEST_WITHDRAWALS_WITH_PERMIT_SELECTOR[SELECTOR_SIZE
 // exemple : https://goerli.etherscan.io/tx/0xe34b52441efa82887c87641316cae369567f74d5689710bc5f5123ab8e92ba9e
 static const uint8_t LIDO_REQUEST_WITHDRAWALS_WSTETH_WITH_PERMIT_SELECTOR[SELECTOR_SIZE] = {0x79, 0x51, 0xb7, 0x6f};
 
-// Function: claimWithdrawals(uint256[] _requestIds,uint256[] _hints) we will always say that array are of length 1
-// exemple : https://goerli.etherscan.io/tx/0xe34b52441efa82887c87641316cae369567f74d5689710bc5f5123ab8e92ba9e
+// Function: claimWithdrawals(uint256[] _requestIds,uint256[] _hints)
+// exemple : https://goerli.etherscan.io/tx/0x185544ade172813f84b903656d4e207da7abfed68ba4efc0f940541eeb472565
 static const uint8_t LIDO_CLAIM_WITHDRAWALS_SELECTOR[SELECTOR_SIZE] = {0xe3, 0xaf, 0xe0, 0xa3};
 
-// Function: claimWithdrawals(uint256[] _requestIds,uint256[] _hints) we will always say that array are of length 1
-// exemple : https://goerli.etherscan.io/tx/0xe34b52441efa82887c87641316cae369567f74d5689710bc5f5123ab8e92ba9e
-static const uint8_t LIDO_REQUEST_WITHDRAWALS_SELECTOR[SELECTOR_SIZE] = {0xe3, 0xaf, 0xe0, 0xa3};
+// Function: requestWithdrawals(uint256[] _amounts,address _owner)
+// exemple : https://goerli.etherscan.io/tx/0xc0aa45706b49ff5eb86ad62fe58a7d0274211c02df111037ad7e4a82dcf28e86
+static const uint8_t LIDO_REQUEST_WITHDRAWALS_SELECTOR[SELECTOR_SIZE] = {0xd6, 0x68, 0x10, 0x42};
 
 // Array of all the different lido selectors.
 const uint8_t *const LIDO_SELECTORS[NUM_LIDO_SELECTORS] = {
@@ -36,7 +36,7 @@ const uint8_t *const LIDO_SELECTORS[NUM_LIDO_SELECTORS] = {
     LIDO_REQUEST_WITHDRAWALS_WITH_PERMIT_SELECTOR,
     LIDO_REQUEST_WITHDRAWALS_WSTETH_WITH_PERMIT_SELECTOR,
     LIDO_CLAIM_WITHDRAWALS_SELECTOR,
-    LIDO_REQUEST_WITHDRAWALS_SELECTOR
+    LIDO_REQUEST_WITHDRAWALS_SELECTOR,
 };
 
 // Ask dummy address ETH
