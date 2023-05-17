@@ -2,17 +2,17 @@ import { processTest, populateTransaction } from "../test.fixture";
 
 const contractName = "OssifiableProxy"; // <= Name of the smart contract
 
-const testLabel = "ethereum_request_withdrawals_with_permit_method"; // <= Name of the test
-const testDirSuffix = "request_withdrawals_with_permit_method"; // <= directory to compare device snapshots to
-const testNetwork = "ethereum";
+const testLabel = "goerli_request_withdrawals_wsteth_method"; // <= Name of the test
+const testDirSuffix = "request_withdrawals_wsteth_method"; // <= directory to compare device snapshots to
+const testNetwork = "goerli";
 const signedPlugin = false;
 
 const contractAddr = "0xcf117961421ca9e546cd7f50bc73abcdb3039533"; // <= Address of the smart contract
 const chainID = 1;
 
-// From : https://goerli.etherscan.io/tx/0x1e3c618b0ec519dbafff8e00758e83de9b0c3c9f067e1b441886ba5fc828213c
+// From : https://goerli.etherscan.io/tx/0xed441dfe79cd05758fe8c4d9e479bd8662702ca16bdfe41b6016ce9880d14987
 const inputData =
-  "0xacf41e4d00000000000000000000000000000000000000000000000000000000000000e0000000000000000000000000d8720b92d8a9e4ee8a39477e3b3883c542996bbf0000000000000000000000000000000000000000000000000027147114878000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff000000000000000000000000000000000000000000000000000000000000001b24ff1c4174b0208527492f269428db160f51157fb03587915a9535a3691c8efc1e275d4b0881b7020d32bca1b6f2a9b6dcee0c5cc8d320af1a372f2e0feb58a100000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000027147114878000";
+  "0x19aa62570000000000000000000000000000000000000000000000000000000000000040000000000000000000000000ad79579eecef31f4719426232d7b527b17b84f85000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000005af3107a4000";
 // Create serializedTx and remove the "0x" prefix
 const serializedTx = populateTransaction(contractAddr, inputData, chainID);
 const devices = [

@@ -2,9 +2,9 @@ import { processTest, populateTransaction } from "../test.fixture";
 
 const contractName = "OssifiableProxy"; // <= Name of the smart contract
 
-const testLabel = "ethereum_claim_withdrawals_method"; // <= Name of the test
+const testLabel = "goerli_claim_withdrawals_method"; // <= Name of the test
 const testDirSuffix = "claim_withdrawals_method"; // <= directory to compare device snapshots to
-const testNetwork = "ethereum";
+const testNetwork = "goerli";
 const signedPlugin = false;
 
 const contractAddr = "0xcf117961421ca9e546cd7f50bc73abcdb3039533"; // <= Address of the smart contract
