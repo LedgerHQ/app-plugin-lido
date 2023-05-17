@@ -6,7 +6,7 @@ build/
 debug/
 dep/
 obj/
-
+scan-build
 # Editors
 .idea/
 .vscode
