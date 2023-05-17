@@ -45,6 +45,9 @@ On these smart contracts, the functions covered by this plugin are:
 | Request Withdrawals wstETH             | 0x19aa6257 | <table> <tbody> <tr><td><code>address \_owner</code></td></tr> <tr><td><code>uint256[] \_amounts</code></td></tr> </tbody> </table> |
 | Request Withdrawals With Permit        | 0xacf41e4d | <table> <tbody> <tr><td><code>address \_owner</code></td></tr> <tr><td><code>uint256[] \_amounts</code></td></tr> </tbody> </table> |
 | Request Withdrawals wstETH With Permit | 0x7951b76f | <table> <tbody> <tr><td><code>address \_owner</code></td></tr> <tr><td><code>uint256[] \_amounts</code></td></tr> </tbody> </table> |
+| Submit                                 | 0xa1903eab | <code>uint256 \_Amount</code>                                                                                                       |
+| Wrap                                   | 0xea598cb0 | <code>uint256[] \_wstETHAmount</code>                                                                                               |
+| Unwrap                                 | 0xde0e9a3e | <code>uint256[] \_wstETHAmount</code>                                                                                               |
 
 ## Build
 

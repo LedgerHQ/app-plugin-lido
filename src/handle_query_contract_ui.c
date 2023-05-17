@@ -105,7 +105,7 @@ static screens_t get_screen(ethQueryContractUI_t *msg,
                             lido_parameters_t *context __attribute__((unused))) {
     uint8_t index = msg->screenIndex;
 
-    bool token_received_found = context->tokens_found & TOKEN_RECEIVED_FOUND;
+    // bool token_received_found = context->tokens_found & TOKEN_RECEIVED_FOUND;
 
     switch (context->selectorIndex) {
         case SUBMIT:

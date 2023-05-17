@@ -47,6 +47,7 @@ typedef enum {
 typedef enum {
     AMOUNT_SENT,
     ADDRESS_SENT,
+    REFERRAL,
     NONE,
 } selectorField;
 
