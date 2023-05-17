@@ -36,6 +36,7 @@ void handle_init_contract(void *parameters) {
         case REQUEST_WITHDRAWALS_WITH_PERMIT:
         case REQUEST_WITHDRAWALS_WSTETH_WITH_PERMIT:
         case REQUEST_WITHDRAWALS:
+        case REQUEST_WITHDRAWALS_WSTETH:
             context->skip++; // skip offset
             context->next_param = ADDRESS_SENT;
             break;

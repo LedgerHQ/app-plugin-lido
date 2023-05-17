@@ -25,6 +25,7 @@ void handle_finalize(void *parameters) {
         case REQUEST_WITHDRAWALS_WITH_PERMIT:
         case REQUEST_WITHDRAWALS_WSTETH_WITH_PERMIT:
         case REQUEST_WITHDRAWALS:
+        case REQUEST_WITHDRAWALS_WSTETH:
             msg->numScreens = 2;
             break;
         default:

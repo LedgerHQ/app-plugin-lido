@@ -139,6 +139,7 @@ void handle_provide_parameter(void *parameters) {
                 handle_claim_withdrawals(msg, context);
                 break;
             case REQUEST_WITHDRAWALS:
+            case REQUEST_WITHDRAWALS_WSTETH:
                 handle_request_withdrawals(msg, context);
                 break;
             default:

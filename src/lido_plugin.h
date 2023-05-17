@@ -7,7 +7,7 @@
 #define PARAMETER_LENGTH 32
 #define SELECTOR_SIZE    4
 
-#define NUM_LIDO_SELECTORS 7
+#define NUM_LIDO_SELECTORS 8
 
 #define PLUGIN_NAME "lido"
 
@@ -36,6 +36,7 @@ typedef enum {
     REQUEST_WITHDRAWALS_WSTETH_WITH_PERMIT,
     CLAIM_WITHDRAWALS,
     REQUEST_WITHDRAWALS,
+    REQUEST_WITHDRAWALS_WSTETH,
 } lidoSelector_t;
 
 typedef enum {
