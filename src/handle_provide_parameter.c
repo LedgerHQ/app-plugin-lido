@@ -66,6 +66,22 @@ static void handle_permit(ethPluginProvideParameter_t *msg, lido_parameters_t *c
     }
 }
 
+static void handle_claim_withdrawals(ethPluginProvideParameter_t *msg, lido_parameters_t *context) {
+    switch (context->next_param) {
+        case AMOUNT_SENT:
+            handle_amount_sent(msg, context);
+            context->next_param = NONE;
+            // rest of the transaction doesnt need to be displayed on ledger (hints)
+            break;
+        case NONE:
+            break;
+        default:
+            PRINTF("Param not supported\n");
+            msg->result = ETH_PLUGIN_RESULT_ERROR;
+            break;
+    }
+}
+
 void handle_provide_parameter(void *parameters) {
     ethPluginProvideParameter_t *msg = (ethPluginProvideParameter_t *) parameters;
     lido_parameters_t *context = (lido_parameters_t *) msg->pluginContext;
@@ -101,6 +117,9 @@ void handle_provide_parameter(void *parameters) {
             case REQUEST_WITHDRAWALS_WITH_PERMIT:
             case REQUEST_WITHDRAWALS_WSTETH_WITH_PERMIT:
                 handle_permit(msg, context);
+                break;
+            case CLAIM_WITHDRAWALS:
+                handle_claim_withdrawals(msg, context);
                 break;
             default:
                 PRINTF("Selector Index %d not supported\n", context->selectorIndex);

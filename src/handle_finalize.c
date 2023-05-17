@@ -19,6 +19,7 @@ void handle_finalize(void *parameters) {
         case SUBMIT:
         case UNWRAP:
         case WRAP:
+        case CLAIM_WITHDRAWALS:
             msg->numScreens = 1;
             break;
         case REQUEST_WITHDRAWALS_WITH_PERMIT:
@@ -26,7 +27,6 @@ void handle_finalize(void *parameters) {
             msg->numScreens = 2;
             break;
         default:
-            msg->numScreens = 1;
             break;
         }
         msg->uiType = ETH_UI_TYPE_GENERIC;

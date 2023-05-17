@@ -29,6 +29,9 @@ static void set_send_ui(ethQueryContractUI_t *msg, lido_parameters_t *context) {
             strlcpy(msg->title, "Value", msg->titleLength);
             ticker = WSTETH_TICKER;
             break;
+        case CLAIM_WITHDRAWALS:
+            strlcpy(msg->title, "Request Ids", msg->titleLength);
+            break;
         default:
             PRINTF("Unhandled selector Index: %d\n", context->selectorIndex);
             msg->result = ETH_PLUGIN_RESULT_ERROR;
@@ -64,6 +67,8 @@ static void set_send_ui(ethQueryContractUI_t *msg, lido_parameters_t *context) {
                    ticker,
                    msg->msg,
                    msg->msgLength);
+        case CLAIM_WITHDRAWALS:
+            return uint256_to_decimal(context->amount_sent, INT256_LENGTH, msg->msg, msg->msgLength)
         default:
             break;
     }
@@ -113,6 +118,14 @@ static screens_t get_screen(ethQueryContractUI_t *msg,
                 case 0:
                     return ADDRESS_SCREEN;
                 case 1:
+                    return SEND_SCREEN;
+                default:
+                    return ERROR;     
+            }
+            break;
+        case CLAIM_WITHDRAWALS:
+            switch (index) {
+                case 0:
                     return SEND_SCREEN;
                 default:
                     return ERROR;     
