@@ -22,6 +22,7 @@ static void set_send_ui(ethQueryContractUI_t *msg, lido_parameters_t *context) {
             ticker = STETH_TICKER;
             break;
         case REQUEST_WITHDRAWALS_WITH_PERMIT:
+        case REQUEST_WITHDRAWALS:
             strlcpy(msg->title, "Value", msg->titleLength);
             ticker = STETH_TICKER;
             break;
@@ -61,6 +62,7 @@ static void set_send_ui(ethQueryContractUI_t *msg, lido_parameters_t *context) {
                    msg->msgLength);
         case REQUEST_WITHDRAWALS_WITH_PERMIT:
         case REQUEST_WITHDRAWALS_WSTETH_WITH_PERMIT:
+        case REQUEST_WITHDRAWALS:
             return amountToString(context->amount_sent,
                    INT256_LENGTH,
                    context->decimals_sent,
@@ -80,6 +82,7 @@ static void set_address_ui(ethQueryContractUI_t *msg, lido_parameters_t *context
     switch (context->selectorIndex) {
         case REQUEST_WITHDRAWALS_WITH_PERMIT:
         case REQUEST_WITHDRAWALS_WSTETH_WITH_PERMIT:
+        case REQUEST_WITHDRAWALS:
             strlcpy(msg->title, "Owner", msg->titleLength);
             break;
         default:
@@ -115,6 +118,7 @@ static screens_t get_screen(ethQueryContractUI_t *msg,
             }
         case REQUEST_WITHDRAWALS_WITH_PERMIT:
         case REQUEST_WITHDRAWALS_WSTETH_WITH_PERMIT:
+        case REQUEST_WITHDRAWALS:
             switch (index) {
                 case 0:
                     return ADDRESS_SCREEN;

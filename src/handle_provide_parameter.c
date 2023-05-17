@@ -66,6 +66,25 @@ static void handle_permit(ethPluginProvideParameter_t *msg, lido_parameters_t *c
     }
 }
 
+static void handle_request_withdrawals(ethPluginProvideParameter_t *msg, lido_parameters_t *context) {
+    switch (context->next_param) {
+        case ADDRESS_SENT:
+            handle_address_sent(msg, context);
+            context->skip++;
+            context->next_param = AMOUNT_SENT;
+            break;
+        case AMOUNT_SENT:
+            handle_amount_sent(msg, context);
+            break;
+        case NONE:
+            break;
+        default:
+            PRINTF("Param not supported\n");
+            msg->result = ETH_PLUGIN_RESULT_ERROR;
+            break;
+    }
+}
+
 static void handle_claim_withdrawals(ethPluginProvideParameter_t *msg, lido_parameters_t *context) {
     switch (context->next_param) {
         case AMOUNT_SENT:
@@ -120,6 +139,9 @@ void handle_provide_parameter(void *parameters) {
                 break;
             case CLAIM_WITHDRAWALS:
                 handle_claim_withdrawals(msg, context);
+                break;
+            case REQUEST_WITHDRAWALS:
+                handle_request_withdrawals(msg, context);
                 break;
             default:
                 PRINTF("Selector Index %d not supported\n", context->selectorIndex);
