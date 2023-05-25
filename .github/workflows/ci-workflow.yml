@@ -12,8 +12,20 @@ on:
       - develop
 
 jobs:
-  job_build_debug:
-    name: Build debug
+  job_build_release_plugin:
+    name: Build release plugin
+    strategy:
+      matrix:
+        include:
+          - sdk: "$NANOS_SDK"
+            name: "nanos"
+          - sdk: "$NANOX_SDK"
+            name: "nanox"
+          - sdk: "$NANOSP_SDK"
+            name: "nanosp"
+          - sdk: "$STAX_SDK"
+            name: "stax"
+
     runs-on: ubuntu-latest
 
     container:
