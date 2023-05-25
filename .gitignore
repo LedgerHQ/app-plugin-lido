@@ -7,6 +7,8 @@ debug/
 dep/
 obj/
 scan-build
+build/
+
 # Editors
 .idea/
 .vscode

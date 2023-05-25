@@ -4,7 +4,10 @@
 NANOS_SDK=$NANOS_SDK
 NANOX_SDK=$NANOX_SDK
 NANOSP_SDK=$NANOSP_SDK
-APP_ETHEREUM=/plugin_dev/app-ethereum
+APP_ETHEREUM=${APP_ETHEREUM:-"/plugin_dev/app-ethereum"}
+
+# list of apps required by tests that we want to build here
+appnames=("ethereum" "ethereum_classic")
 
 # create elfs folder if it doesn't exist
 mkdir -p elfs
@@ -12,51 +15,47 @@ mkdir -p elfs
 # move to repo's root to build apps
 cd ..
 
-echo "*Building elfs for Nano S..."
-export BOLOS_SDK="$NANOS_SDK"
+echo "*Building elfs for Nano SP..."
 
-echo "**Building app-plugin for Nano S..."
-make clean
-make -j DEBUG=1
+echo "**Building app-lido for Nano SP..."
+make clean BOLOS_SDK=$NANOSP_SDK || exit
+make -j DEBUG=1 BOLOS_SDK=$NANOSP_SDK || exit
+cp bin/app.elf "tests/elfs/lido_nanosp.elf"
+
+echo "**Building app-ethereum for Nano SP..."
+cd $APP_ETHEREUM
+make clean BOLOS_SDK=$NANOSP_SDK || exit
+make -j DEBUG=1 ALLOW_DATA=1 BOLOS_SDK=$NANOSP_SDK CHAIN=ethereum || exit
+cd -
+cp "${APP_ETHEREUM}/bin/app.elf" "tests/elfs/ethereum_nanosp.elf"
+
+echo "*Building elfs for Nano S..."
+
+echo "**Building app-lido for Nano S..."
+make clean BOLOS_SDK=$NANOS_SDK || exit
+make -j DEBUG=1 BOLOS_SDK=$NANOS_SDK || exit
 cp bin/app.elf "tests/elfs/lido_nanos.elf"
 
 echo "**Building app-ethereum for Nano S..."
 cd $APP_ETHEREUM
-make clean BOLOS_SDK=$NANOS_SDK
-make -j DEBUG=1 BOLOS_SDK=$NANOS_SDK CHAIN=ethereum BYPASS_SIGNATURES=1 ALLOW_DATA=1
+make clean BOLOS_SDK=$NANOS_SDK || exit
+make -j DEBUG=1 ALLOW_DATA=1 BOLOS_SDK=$NANOS_SDK CHAIN=ethereum || exit
 cd -
 cp "${APP_ETHEREUM}/bin/app.elf" "tests/elfs/ethereum_nanos.elf"
 
 
 echo "*Building elfs for Nano X..."
-export BOLOS_SDK="$NANOX_SDK"
 
-echo "**Building app-plugin for Nano X..."
-make clean
-make -j DEBUG=1
+echo "**Building app-lido for Nano X..."
+make clean BOLOS_SDK=$NANOX_SDK || exit
+make -j DEBUG=1 BOLOS_SDK=$NANOX_SDK || exit
 cp bin/app.elf "tests/elfs/lido_nanox.elf"
 
 echo "**Building app-ethereum for Nano X..."
 cd $APP_ETHEREUM
-make clean BOLOS_SDK=$NANOX_SDK
-make -j DEBUG=1 BOLOS_SDK=$NANOX_SDK CHAIN=ethereum BYPASS_SIGNATURES=1 ALLOW_DATA=1
+make clean BOLOS_SDK=$NANOX_SDK || exit
+make -j DEBUG=1 ALLOW_DATA=1 BOLOS_SDK=$NANOX_SDK CHAIN=ethereum || exit
 cd -
 cp "${APP_ETHEREUM}/bin/app.elf" "tests/elfs/ethereum_nanox.elf"
-
-
-echo "*Building elfs for Nano X..."
-export BOLOS_SDK="$NANOSP_SDK"
-
-echo "**Building app-plugin for Nano S+..."
-make clean
-make -j DEBUG=1
-cp bin/app.elf "tests/elfs/lido_nanosp.elf"
-
-echo "**Building app-ethereum for Nano S+..."
-cd $APP_ETHEREUM
-make clean BOLOS_SDK=$NANOSP_SDK
-make -j DEBUG=1 BOLOS_SDK=$NANOSP_SDK CHAIN=ethereum BYPASS_SIGNATURES=1 ALLOW_DATA=1
-cd -
-cp "${APP_ETHEREUM}/bin/app.elf" "tests/elfs/ethereum_nanosp.elf"
 
 echo "done"
