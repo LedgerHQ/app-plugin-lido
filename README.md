@@ -12,7 +12,7 @@ This is a plugin for the Ethereum application which helps parsing and displaying
 Clone the plugin to a new folder.
 
 ```shell
-git clone https://github.com/blooo-io/LedgerHQ-app-plugin-lido.git
+git clone --recurse-submodules https://github.com/blooo-io/LedgerHQ-app-plugin-lido.git
 ```
 
 Then in the same folder clone two more repositories, which is the plugin-tools and app-ethereum.
@@ -69,9 +69,12 @@ cd LedgerHQ-app-plugin-lido/tests       # go to the tests folder in LedgerHQ-app
 ## Tests
 
 To test the plugin go to the tests folder from the "LedgerHQ-app-plugin-lido" and run the script "test"
+Make sure both sdk submodule commit match in your plugin folder & on app-ethereum folder !
 
 ```shell
 cd LedgerHQ-app-plugin-lido/tests       # go to the tests folder in LedgerHQ-app-plugin-lido
+docker pull zondax/builder-zemu@sha256:8d7b06cedf2d018b9464f4af4b7a8357c3fbb180f3ab153f8cb8f138defb22a4 
+yarn install                    # install packages
 yarn test                       # run the script test
 ```
 
