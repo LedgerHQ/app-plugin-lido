@@ -41,8 +41,8 @@ void handle_init_contract(void *parameters) {
             context->next_param = ADDRESS_SENT;
             break;
         case CLAIM_WITHDRAWALS:
-            context->skip = 3;
-            context->next_param = AMOUNT_SENT;
+            context->skip = 2;  // skip offset
+            context->next_param = AMOUNT_LENGTH;
             break;
         default:
             PRINTF("Missing selectorIndex\n");
