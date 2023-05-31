@@ -3,7 +3,15 @@
 // Store the amount sent in the form of a string, without any ticker or
 // decimals. These will be added right before display.
 static void handle_amount_sent(ethPluginProvideParameter_t *msg, lido_parameters_t *context) {
-    memcpy(context->amount_sent, msg->parameter, INT256_LENGTH);
+    copy_parameter(context->amount_sent, msg->parameter, INT256_LENGTH);
+}
+
+static void handle_amount_sent_two(ethPluginProvideParameter_t *msg, lido_parameters_t *context) {
+    copy_parameter(context->amount_sent_two, msg->parameter, INT256_LENGTH);
+}
+
+static void handle_amount_length(ethPluginProvideParameter_t *msg, lido_parameters_t *context) {
+    U2BE_from_parameter(msg->parameter, &context->amount_length);
 }
 
 static void handle_address_sent(ethPluginProvideParameter_t *msg, lido_parameters_t *context) {
@@ -62,11 +70,25 @@ static void handle_request_withdrawals(ethPluginProvideParameter_t *msg,
     switch (context->next_param) {
         case ADDRESS_SENT:
             handle_address_sent(msg, context);
-            context->skip++;
+            context->next_param = AMOUNT_LENGTH;
+            break;
+        case AMOUNT_LENGTH:
+            handle_amount_length(msg, context);
             context->next_param = AMOUNT_SENT;
             break;
         case AMOUNT_SENT:
             handle_amount_sent(msg, context);
+            if (context->amount_length == 2) {
+                context->next_param = AMOUNT_SENT_TWO;
+            } else {
+                context->next_param = NONE;
+            }
+            break;
+        case AMOUNT_SENT_TWO:
+            handle_amount_sent_two(msg, context);
+            context->next_param = NONE;
+            break;
+        case NONE:
             break;
         default:
             PRINTF("Param not supported\n");
@@ -77,8 +99,20 @@ static void handle_request_withdrawals(ethPluginProvideParameter_t *msg,
 
 static void handle_claim_withdrawals(ethPluginProvideParameter_t *msg, lido_parameters_t *context) {
     switch (context->next_param) {
+        case AMOUNT_LENGTH:
+            handle_amount_length(msg, context);
+            context->next_param = AMOUNT_SENT;
+            break;
         case AMOUNT_SENT:
             handle_amount_sent(msg, context);
+            if (context->amount_length == 2) {
+                context->next_param = AMOUNT_SENT_TWO;
+            } else {
+                context->next_param = NONE;
+            }
+            break;
+        case AMOUNT_SENT_TWO:
+            handle_amount_sent_two(msg, context);
             context->next_param = NONE;
             // rest of the transaction doesnt need to be displayed on ledger (hints)
             break;

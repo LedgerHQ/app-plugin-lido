@@ -21,12 +21,12 @@ static void set_send_ui(ethQueryContractUI_t *msg, lido_parameters_t *context) {
             break;
         case REQUEST_WITHDRAWALS_WITH_PERMIT:
         case REQUEST_WITHDRAWALS:
-            strlcpy(msg->title, "Value", msg->titleLength);
+            strlcpy(msg->title, "Amount", msg->titleLength);
             ticker = STETH_TICKER;
             break;
         case REQUEST_WITHDRAWALS_WSTETH_WITH_PERMIT:
         case REQUEST_WITHDRAWALS_WSTETH:
-            strlcpy(msg->title, "Value", msg->titleLength);
+            strlcpy(msg->title, "Amount", msg->titleLength);
             ticker = WSTETH_TICKER;
             break;
         case CLAIM_WITHDRAWALS:
@@ -77,6 +77,49 @@ static void set_send_ui(ethQueryContractUI_t *msg, lido_parameters_t *context) {
     }
 }
 
+static void set_send_ui_two(ethQueryContractUI_t *msg, lido_parameters_t *context) {
+    const char *ticker = "";
+
+    switch (context->selectorIndex) {
+        case CLAIM_WITHDRAWALS:
+            strlcpy(msg->title, "Request Ids", msg->titleLength);
+            break;
+        case REQUEST_WITHDRAWALS:
+            strlcpy(msg->title, "Amount", msg->titleLength);
+            ticker = STETH_TICKER;
+            break;
+        case REQUEST_WITHDRAWALS_WSTETH:
+            strlcpy(msg->title, "Amount", msg->titleLength);
+            ticker = WSTETH_TICKER;
+            break;
+        default:
+            PRINTF("Unhandled selector Index: %d\n", context->selectorIndex);
+            msg->result = ETH_PLUGIN_RESULT_ERROR;
+            break;
+    }
+
+    // set network ticker (ETH, BNB, etc) if needed
+    if (ADDRESS_IS_NETWORK_TOKEN(context->contract_address_sent)) {
+        strlcpy(context->ticker_sent, msg->network_ticker, sizeof(context->ticker_sent));
+    }
+
+    switch (context->selectorIndex) {
+        case CLAIM_WITHDRAWALS:
+            uint256_to_decimal(context->amount_sent_two, INT256_LENGTH, msg->msg, msg->msgLength);
+            break;
+        case REQUEST_WITHDRAWALS:
+        case REQUEST_WITHDRAWALS_WSTETH:
+            return amountToString(context->amount_sent_two,
+                                  INT256_LENGTH,
+                                  context->decimals_sent,
+                                  ticker,
+                                  msg->msg,
+                                  msg->msgLength);
+        default:
+            break;
+    }
+}
+
 // Set UI for the "Address" screen.
 static void set_address_ui(ethQueryContractUI_t *msg, lido_parameters_t *context) {
     switch (context->selectorIndex) {
@@ -105,8 +148,6 @@ static screens_t get_screen(ethQueryContractUI_t *msg,
                             lido_parameters_t *context __attribute__((unused))) {
     uint8_t index = msg->screenIndex;
 
-    // bool token_received_found = context->tokens_found & TOKEN_RECEIVED_FOUND;
-
     switch (context->selectorIndex) {
         case SUBMIT:
         case WRAP:
@@ -119,8 +160,6 @@ static screens_t get_screen(ethQueryContractUI_t *msg,
             }
         case REQUEST_WITHDRAWALS_WITH_PERMIT:
         case REQUEST_WITHDRAWALS_WSTETH_WITH_PERMIT:
-        case REQUEST_WITHDRAWALS:
-        case REQUEST_WITHDRAWALS_WSTETH:
             switch (index) {
                 case 0:
                     return ADDRESS_SCREEN;
@@ -130,10 +169,25 @@ static screens_t get_screen(ethQueryContractUI_t *msg,
                     return ERROR;
             }
             break;
+        case REQUEST_WITHDRAWALS:
+        case REQUEST_WITHDRAWALS_WSTETH:
+            switch (index) {
+                case 0:
+                    return ADDRESS_SCREEN;
+                case 1:
+                    return SEND_SCREEN;
+                case 2:
+                    return SEND_SCREEN_TWO;
+                default:
+                    return ERROR;
+            }
+            break;
         case CLAIM_WITHDRAWALS:
             switch (index) {
                 case 0:
                     return SEND_SCREEN;
+                case 1:
+                    return SEND_SCREEN_TWO;
                 default:
                     return ERROR;
             }
@@ -156,6 +210,9 @@ void handle_query_contract_ui(void *parameters) {
     switch (screen) {
         case SEND_SCREEN:
             set_send_ui(msg, context);
+            break;
+        case SEND_SCREEN_TWO:
+            set_send_ui_two(msg, context);
             break;
         case ADDRESS_SCREEN:
             set_address_ui(msg, context);
