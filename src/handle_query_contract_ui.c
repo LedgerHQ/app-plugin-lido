@@ -143,6 +143,15 @@ static screens_t get_screen(ethQueryContractUI_t *msg,
             }
         case REQUEST_WITHDRAWALS_WITH_PERMIT:
         case REQUEST_WITHDRAWALS_WSTETH_WITH_PERMIT:
+            switch (index) {
+                case 0:
+                    return ADDRESS_SCREEN;
+                case 1:
+                    return SEND_SCREEN;
+                default:
+                    return ERROR;
+            }
+            break;
         case REQUEST_WITHDRAWALS:
         case REQUEST_WITHDRAWALS_WSTETH:
             switch (index) {
@@ -150,6 +159,8 @@ static screens_t get_screen(ethQueryContractUI_t *msg,
                     return ADDRESS_SCREEN;
                 case 1:
                     return SEND_SCREEN;
+                case 2:
+                    return SEND_SCREEN_TWO;
                 default:
                     return ERROR;
             }

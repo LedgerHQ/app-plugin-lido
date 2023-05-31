@@ -23,9 +23,15 @@ void handle_finalize(void *parameters) {
                 break;
             case REQUEST_WITHDRAWALS_WITH_PERMIT:
             case REQUEST_WITHDRAWALS_WSTETH_WITH_PERMIT:
+                msg->numScreens = 2;
+                break;
             case REQUEST_WITHDRAWALS:
             case REQUEST_WITHDRAWALS_WSTETH:
-                msg->numScreens = 2;
+                if (context->amount_length == 2) {
+                    msg->numScreens = 3;
+                } else {
+                    msg->numScreens = 2;
+                }
                 break;
             default:
                 break;

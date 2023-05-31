@@ -70,11 +70,25 @@ static void handle_request_withdrawals(ethPluginProvideParameter_t *msg,
     switch (context->next_param) {
         case ADDRESS_SENT:
             handle_address_sent(msg, context);
-            context->skip++;
+            context->next_param = AMOUNT_LENGTH;
+            break;
+        case AMOUNT_LENGTH:
+            handle_amount_length(msg, context);
             context->next_param = AMOUNT_SENT;
             break;
         case AMOUNT_SENT:
             handle_amount_sent(msg, context);
+            if (context->amount_length == 2) {
+                context->next_param = AMOUNT_SENT_TWO;
+            } else {
+                context->next_param = NONE;
+            }
+            break;
+        case AMOUNT_SENT_TWO:
+            handle_amount_sent_two(msg, context);
+            context->next_param = NONE;
+            break;
+        case NONE:
             break;
         default:
             PRINTF("Param not supported\n");
