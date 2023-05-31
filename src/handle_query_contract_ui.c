@@ -21,12 +21,12 @@ static void set_send_ui(ethQueryContractUI_t *msg, lido_parameters_t *context) {
             break;
         case REQUEST_WITHDRAWALS_WITH_PERMIT:
         case REQUEST_WITHDRAWALS:
-            strlcpy(msg->title, "Value", msg->titleLength);
+            strlcpy(msg->title, "Amount", msg->titleLength);
             ticker = STETH_TICKER;
             break;
         case REQUEST_WITHDRAWALS_WSTETH_WITH_PERMIT:
         case REQUEST_WITHDRAWALS_WSTETH:
-            strlcpy(msg->title, "Value", msg->titleLength);
+            strlcpy(msg->title, "Amount", msg->titleLength);
             ticker = WSTETH_TICKER;
             break;
         case CLAIM_WITHDRAWALS:
@@ -78,10 +78,19 @@ static void set_send_ui(ethQueryContractUI_t *msg, lido_parameters_t *context) {
 }
 
 static void set_send_ui_two(ethQueryContractUI_t *msg, lido_parameters_t *context) {
+    const char *ticker = "";
 
     switch (context->selectorIndex) {
         case CLAIM_WITHDRAWALS:
             strlcpy(msg->title, "Request Ids", msg->titleLength);
+            break;
+        case REQUEST_WITHDRAWALS:
+            strlcpy(msg->title, "Amount", msg->titleLength);
+            ticker = STETH_TICKER;
+            break;
+        case REQUEST_WITHDRAWALS_WSTETH:
+            strlcpy(msg->title, "Amount", msg->titleLength);
+            ticker = WSTETH_TICKER;
             break;
         default:
             PRINTF("Unhandled selector Index: %d\n", context->selectorIndex);
@@ -98,6 +107,14 @@ static void set_send_ui_two(ethQueryContractUI_t *msg, lido_parameters_t *contex
         case CLAIM_WITHDRAWALS:
             uint256_to_decimal(context->amount_sent_two, INT256_LENGTH, msg->msg, msg->msgLength);
             break;
+        case REQUEST_WITHDRAWALS:
+        case REQUEST_WITHDRAWALS_WSTETH:
+            return amountToString(context->amount_sent_two,
+                                  INT256_LENGTH,
+                                  context->decimals_sent,
+                                  ticker,
+                                  msg->msg,
+                                  msg->msgLength);
         default:
             break;
     }
