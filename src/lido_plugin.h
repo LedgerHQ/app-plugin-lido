@@ -60,10 +60,8 @@ extern const uint8_t *const LIDO_SELECTORS[NUM_LIDO_SELECTORS];
 #define DEFAULT_DECIMAL WEI_TO_ETHER
 
 // Ticker used when the token wasn't found in the CAL.
-#define DEFAULT_TICKER ""
+#define DEFAULT_TICKER             ""
 #define MAXIMUM_STR_SIZE_OF_INT256 80
-
-#define AMOUNT_LENGTH_SIZE         1
 
 // Shared global memory with Ethereum app. Must be at most 5 * 32 bytes.
 typedef struct lido_parameters_t {
