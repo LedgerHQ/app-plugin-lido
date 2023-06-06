@@ -11,8 +11,8 @@
 
 #define PLUGIN_NAME "lido"
 
-#define STETH_TICKER   "stETH"
-#define WSTETH_TICKER  "wstETH"
+#define STETH_TICKER  "stETH"
+#define WSTETH_TICKER "wstETH"
 
 #define TOKEN_SENT_FOUND 1  // REMOVE IF NOT USED
 
@@ -20,7 +20,7 @@
 #define DEFAULT_DECIMAL WEI_TO_ETHER
 
 // Ticker used when the token wasn't found in the CAL.
-#define DEFAULT_TICKER             ""
+#define DEFAULT_TICKER ""
 
 typedef enum {
     SUBMIT,
