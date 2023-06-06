@@ -23,6 +23,12 @@ void handle_init_contract(void *parameters) {
             break;
         }
     }
+
+    if (context->selectorIndex == NUM_LIDO_SELECTORS) {
+        msg->result = ETH_PLUGIN_RESULT_ERROR;
+        return;
+    }
+
     context->valid = 0;  // init on false for security
     // Set `next_param` to be the first field we expect to parse.
     switch (context->selectorIndex) {
@@ -37,7 +43,7 @@ void handle_init_contract(void *parameters) {
         case REQUEST_WITHDRAWALS_WSTETH_WITH_PERMIT:
         case REQUEST_WITHDRAWALS:
         case REQUEST_WITHDRAWALS_WSTETH:
-            context->skip++;  // skip offset
+            context->skip = 1;  // skip offset
             context->next_param = ADDRESS_SENT;
             break;
         case CLAIM_WITHDRAWALS:

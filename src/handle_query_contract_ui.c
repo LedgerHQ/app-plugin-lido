@@ -2,8 +2,7 @@
 
 // Set UI for the "Send" screen.
 static void set_send_ui(ethQueryContractUI_t *msg, lido_parameters_t *context) {
-    uint8_t decimals = 0;
-    const char *ticker = "";
+    const char *ticker = "ETH";
 
     switch (context->selectorIndex) {
         case SUBMIT:
@@ -11,12 +10,10 @@ static void set_send_ui(ethQueryContractUI_t *msg, lido_parameters_t *context) {
             break;
         case UNWRAP:
             strlcpy(msg->title, "Unwrap", msg->titleLength);
-            decimals = WSTETH_DECIMALS;
             ticker = WSTETH_TICKER;
             break;
         case WRAP:
             strlcpy(msg->title, "Wrap", msg->titleLength);
-            decimals = STETH_DECIMALS;
             ticker = STETH_TICKER;
             break;
         case REQUEST_WITHDRAWALS_WITH_PERMIT:
@@ -38,34 +35,23 @@ static void set_send_ui(ethQueryContractUI_t *msg, lido_parameters_t *context) {
             break;
     }
 
-    // set network ticker (ETH, BNB, etc) if needed
-    if (ADDRESS_IS_NETWORK_TOKEN(context->contract_address_sent)) {
-        strlcpy(context->ticker_sent, msg->network_ticker, sizeof(context->ticker_sent));
-    }
-
     switch (context->selectorIndex) {
         case SUBMIT:
             return amountToString(msg->pluginSharedRO->txContent->value.value,
                                   msg->pluginSharedRO->txContent->value.length,
                                   WEI_TO_ETHER,
-                                  context->ticker_sent,
+                                  ticker,
                                   msg->msg,
                                   msg->msgLength);
         case UNWRAP:
         case WRAP:
-            return amountToString(context->amount_sent,
-                                  INT256_LENGTH,
-                                  decimals,
-                                  ticker,
-                                  msg->msg,
-                                  msg->msgLength);
         case REQUEST_WITHDRAWALS_WITH_PERMIT:
         case REQUEST_WITHDRAWALS_WSTETH_WITH_PERMIT:
         case REQUEST_WITHDRAWALS:
         case REQUEST_WITHDRAWALS_WSTETH:
             return amountToString(context->amount_sent,
                                   INT256_LENGTH,
-                                  context->decimals_sent,
+                                  WEI_TO_ETHER,
                                   ticker,
                                   msg->msg,
                                   msg->msgLength);
@@ -78,7 +64,7 @@ static void set_send_ui(ethQueryContractUI_t *msg, lido_parameters_t *context) {
 }
 
 static void set_send_ui_two(ethQueryContractUI_t *msg, lido_parameters_t *context) {
-    const char *ticker = "";
+    const char *ticker = "ETH";
 
     switch (context->selectorIndex) {
         case CLAIM_WITHDRAWALS:
@@ -98,11 +84,6 @@ static void set_send_ui_two(ethQueryContractUI_t *msg, lido_parameters_t *contex
             break;
     }
 
-    // set network ticker (ETH, BNB, etc) if needed
-    if (ADDRESS_IS_NETWORK_TOKEN(context->contract_address_sent)) {
-        strlcpy(context->ticker_sent, msg->network_ticker, sizeof(context->ticker_sent));
-    }
-
     switch (context->selectorIndex) {
         case CLAIM_WITHDRAWALS:
             uint256_to_decimal(context->amount_sent_two, INT256_LENGTH, msg->msg, msg->msgLength);
@@ -111,7 +92,7 @@ static void set_send_ui_two(ethQueryContractUI_t *msg, lido_parameters_t *contex
         case REQUEST_WITHDRAWALS_WSTETH:
             return amountToString(context->amount_sent_two,
                                   INT256_LENGTH,
-                                  context->decimals_sent,
+                                  WEI_TO_ETHER,
                                   ticker,
                                   msg->msg,
                                   msg->msgLength);

@@ -21,6 +21,7 @@ jobs:
             name: "nanox"
           - sdk: "$NANOSP_SDK"
             name: "nanosp"
+          - sdk: "$STAX_SDK"
 
     runs-on: ubuntu-latest
     container:

@@ -12,21 +12,9 @@
 #define PLUGIN_NAME "lido"
 
 #define STETH_TICKER   "stETH"
-#define STETH_DECIMALS WEI_TO_ETHER
-
 #define WSTETH_TICKER   "wstETH"
-#define WSTETH_DECIMALS WEI_TO_ETHER
 
 #define TOKEN_SENT_FOUND     1       // REMOVE IF NOT USED
-#define TOKEN_RECEIVED_FOUND 1 << 1  // REMOVE IF NOT USED
-
-extern const uint8_t PLUGIN_ETH_ADDRESS[ADDRESS_LENGTH];  // REMOVE IF NOT USED
-extern const uint8_t NULL_ETH_ADDRESS[ADDRESS_LENGTH];    // REMOVE IF NOT USED
-
-// Returns 1 if corresponding address is the address for the chain token (ETH, BNB, MATIC,
-#define ADDRESS_IS_NETWORK_TOKEN(_addr)                    \
-    (!memcmp(_addr, PLUGIN_ETH_ADDRESS, ADDRESS_LENGTH) || \
-     !memcmp(_addr, NULL_ETH_ADDRESS, ADDRESS_LENGTH))
 
 typedef enum {
     SUBMIT,
@@ -68,13 +56,12 @@ typedef struct lido_parameters_t {
     uint8_t amount_sent[INT256_LENGTH];
     uint8_t amount_sent_two[INT256_LENGTH];
     uint8_t address_sent[ADDRESS_LENGTH];
-    uint8_t contract_address_sent[ADDRESS_LENGTH];
     char ticker_sent[MAX_TICKER_LEN];
-    // 2 * 32 + 2 * 20 + 11 = 115
+    // 2 * 32 + 20 + 11 = 95
     uint16_t offset;
     uint16_t checkpoint;
     uint16_t amount_length;
-    // 2 * 4 = 8
+    // 3 * 4 = 12
     uint8_t tokens_found;
     uint8_t decimals_sent;
     uint8_t skip;
@@ -82,7 +69,7 @@ typedef struct lido_parameters_t {
     uint8_t selectorIndex;
     uint8_t valid;
     // 7 * 1 = 7
-    // 115 + 8 + 7 = 130 --- MAX is 160 (5 * 32)
+    // 95 + 12 + 7 = 114 --- MAX is 160 (5 * 32)
 } lido_parameters_t;
 
 _Static_assert(sizeof(lido_parameters_t) <= 5 * 32, "Structure of parameters too big.");
