@@ -21,14 +21,7 @@ endif
 
 include $(BOLOS_SDK)/Makefile.defines
 
-APPNAME = "Lido"
-
-ifeq ($(ETHEREUM_PLUGIN_SDK),)
-ETHEREUM_PLUGIN_SDK=ethereum-plugin-sdk
-endif
-
 APP_LOAD_PARAMS += --appFlags 0x800 --path "44'/60'" --path "45'" --curve secp256k1
-
 APP_LOAD_PARAMS += $(COMMON_LOAD_PARAMS)
 
 APPVERSION_M     = 1
@@ -36,6 +29,9 @@ APPVERSION_N     = 1
 APPVERSION_P     = 1
 APPVERSION       = "$(APPVERSION_M).$(APPVERSION_N).$(APPVERSION_P)"
 
+APPNAME = "Lido"
+
+#prepare hsm generation
 ifeq ($(TARGET_NAME), TARGET_NANOS)
 ICONNAME=icons/nanos_app_lido.gif
 else ifeq ($(TARGET_NAME), TARGET_STAX)
@@ -130,8 +126,6 @@ endif
 
 CC       := $(CLANGPATH)clang
 
-CFLAGS   += -Wno-format-invalid-specifier -Wno-format-extra-args
-
 AS     := $(GCCPATH)arm-none-eabi-gcc
 
 LD       := $(GCCPATH)arm-none-eabi-gcc
@@ -141,7 +135,7 @@ LDLIBS   += -lm -lgcc -lc
 include $(BOLOS_SDK)/Makefile.glyphs
 
 ### variables processed by the common makefile.rules of the SDK to grab source files and include dirs
-APP_SOURCE_PATH  += src $(ETHEREUM_PLUGIN_SDK)
+APP_SOURCE_PATH  += src ethereum-plugin-sdk
 ifneq ($(TARGET_NAME), TARGET_STAX)
 SDK_SOURCE_PATH  += lib_ux
 endif
