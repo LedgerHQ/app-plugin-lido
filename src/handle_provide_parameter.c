@@ -14,7 +14,7 @@ static void handle_amount_length(ethPluginProvideParameter_t *msg, lido_paramete
     if (U2BE_from_parameter(msg->parameter, &context->amount_length) == false) {
         msg->result = ETH_PLUGIN_RESULT_ERROR;
     };
-    if (!context->amount_length >= 1) {
+    if (context->amount_length >= 1 == false) {
         msg->result = ETH_PLUGIN_RESULT_ERROR;
     }
 }

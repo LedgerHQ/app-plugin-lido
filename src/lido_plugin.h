@@ -12,9 +12,15 @@
 #define PLUGIN_NAME "lido"
 
 #define STETH_TICKER   "stETH"
-#define WSTETH_TICKER   "wstETH"
+#define WSTETH_TICKER  "wstETH"
 
-#define TOKEN_SENT_FOUND     1       // REMOVE IF NOT USED
+#define TOKEN_SENT_FOUND 1  // REMOVE IF NOT USED
+
+// Number of decimals used when the token wasn't found in the CAL.
+#define DEFAULT_DECIMAL WEI_TO_ETHER
+
+// Ticker used when the token wasn't found in the CAL.
+#define DEFAULT_TICKER             ""
 
 typedef enum {
     SUBMIT,
@@ -43,13 +49,6 @@ typedef enum {
 } selectorField;
 
 extern const uint8_t *const LIDO_SELECTORS[NUM_LIDO_SELECTORS];
-
-// Number of decimals used when the token wasn't found in the CAL.
-#define DEFAULT_DECIMAL WEI_TO_ETHER
-
-// Ticker used when the token wasn't found in the CAL.
-#define DEFAULT_TICKER             ""
-#define MAXIMUM_STR_SIZE_OF_INT256 80
 
 // Shared global memory with Ethereum app. Must be at most 5 * 32 bytes.
 typedef struct lido_parameters_t {
