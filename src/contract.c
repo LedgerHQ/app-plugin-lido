@@ -52,14 +52,3 @@ const uint8_t *const LIDO_SELECTORS[NUM_LIDO_SELECTORS] = {
     LIDO_REQUEST_WITHDRAWALS_SELECTOR,
     LIDO_REQUEST_WITHDRAWALS_WSTETH_SELECTOR,
 };
-
-// Ask dummy address ETH
-// Remove if not used
-const uint8_t PLUGIN_ETH_ADDRESS[ADDRESS_LENGTH] = {0xee, 0xee, 0xee, 0xee, 0xee, 0xee, 0xee,
-                                                    0xee, 0xee, 0xee, 0xee, 0xee, 0xee, 0xee,
-                                                    0xee, 0xee, 0xee, 0xee, 0xee, 0xee};
-
-// Remove if not used
-const uint8_t NULL_ETH_ADDRESS[ADDRESS_LENGTH] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-                                                  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-                                                  0x00, 0x00, 0x00, 0x00, 0x00, 0x00};

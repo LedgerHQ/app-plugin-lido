@@ -73,7 +73,6 @@ Make sure both sdk submodule commit match in your plugin folder & on app-ethereu
 
 ```shell
 cd LedgerHQ-app-plugin-lido/tests       # go to the tests folder in LedgerHQ-app-plugin-lido
-docker pull zondax/builder-zemu@sha256:8d7b06cedf2d018b9464f4af4b7a8357c3fbb180f3ab153f8cb8f138defb22a4 
 yarn install                    # install packages
 yarn test                       # run the script test
 ```

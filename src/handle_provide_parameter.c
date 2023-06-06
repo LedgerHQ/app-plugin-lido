@@ -11,7 +11,12 @@ static void handle_amount_sent_two(ethPluginProvideParameter_t *msg, lido_parame
 }
 
 static void handle_amount_length(ethPluginProvideParameter_t *msg, lido_parameters_t *context) {
-    U2BE_from_parameter(msg->parameter, &context->amount_length);
+    if (U2BE_from_parameter(msg->parameter, &context->amount_length) == false) {
+        msg->result = ETH_PLUGIN_RESULT_ERROR;
+    };
+    if (context->amount_length >= 1 == false) {
+        msg->result = ETH_PLUGIN_RESULT_ERROR;
+    }
 }
 
 static void handle_address_sent(ethPluginProvideParameter_t *msg, lido_parameters_t *context) {
@@ -78,7 +83,7 @@ static void handle_request_withdrawals(ethPluginProvideParameter_t *msg,
             break;
         case AMOUNT_SENT:
             handle_amount_sent(msg, context);
-            if (context->amount_length == 2) {
+            if (context->amount_length > 1) {
                 context->next_param = AMOUNT_SENT_TWO;
             } else {
                 context->next_param = NONE;
@@ -105,7 +110,7 @@ static void handle_claim_withdrawals(ethPluginProvideParameter_t *msg, lido_para
             break;
         case AMOUNT_SENT:
             handle_amount_sent(msg, context);
-            if (context->amount_length == 2) {
+            if (context->amount_length > 1) {
                 context->next_param = AMOUNT_SENT_TWO;
             } else {
                 context->next_param = NONE;

@@ -25,4 +25,4 @@ jobs:
         with:
           source: "./"
           extensions: "h,c"
-          clangFormatVersion: 12.0.0
+          clangFormatVersion: 12.0.1
