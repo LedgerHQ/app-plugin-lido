@@ -56,7 +56,10 @@ static void set_send_ui(ethQueryContractUI_t *msg, lido_parameters_t *context) {
                                   msg->msg,
                                   msg->msgLength);
         case CLAIM_WITHDRAWALS:
-            uint256_to_decimal(context->amount_sent, INT256_LENGTH, msg->msg, msg->msgLength);
+            if (!uint256_to_decimal(context->amount_sent, INT256_LENGTH, msg->msg, msg->msgLength)) {
+                msg->result = ETH_PLUGIN_RESULT_ERROR;
+                break;
+            };
             break;
         default:
             break;
@@ -86,7 +89,10 @@ static void set_send_ui_two(ethQueryContractUI_t *msg, lido_parameters_t *contex
 
     switch (context->selectorIndex) {
         case CLAIM_WITHDRAWALS:
-            uint256_to_decimal(context->amount_sent_two, INT256_LENGTH, msg->msg, msg->msgLength);
+            if (!uint256_to_decimal(context->amount_sent, INT256_LENGTH, msg->msg, msg->msgLength)) {
+                msg->result = ETH_PLUGIN_RESULT_ERROR;
+                break;
+            };
             break;
         case REQUEST_WITHDRAWALS:
         case REQUEST_WITHDRAWALS_WSTETH:
@@ -125,8 +131,7 @@ static void set_address_ui(ethQueryContractUI_t *msg, lido_parameters_t *context
 }
 
 // Helper function that returns the enum corresponding to the screen that should be displayed.
-static screens_t get_screen(ethQueryContractUI_t *msg,
-                            lido_parameters_t *context __attribute__((unused))) {
+static screens_t get_screen(ethQueryContractUI_t *msg, lido_parameters_t *context) {
     uint8_t index = msg->screenIndex;
 
     switch (context->selectorIndex) {

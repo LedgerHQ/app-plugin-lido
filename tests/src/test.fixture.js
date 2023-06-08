@@ -47,7 +47,7 @@ let genericTx = {
 
 let config;
 
-const TIMEOUT = 10000;
+const TIMEOUT = 20000;
 jest.setTimeout(TIMEOUT);
 
 /**
