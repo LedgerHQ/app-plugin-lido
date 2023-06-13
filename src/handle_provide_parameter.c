@@ -11,10 +11,10 @@ static void handle_amount_sent_two(ethPluginProvideParameter_t *msg, lido_parame
 }
 
 static void handle_amount_length(ethPluginProvideParameter_t *msg, lido_parameters_t *context) {
-   if (!U2BE_from_parameter(msg->parameter, &context->amount_length) ||
-       context->amount_length == 0) {
-       msg->result = ETH_PLUGIN_RESULT_ERROR;
-   }
+    if (!U2BE_from_parameter(msg->parameter, &context->amount_length) ||
+        context->amount_length == 0) {
+        msg->result = ETH_PLUGIN_RESULT_ERROR;
+    }
 }
 
 static void handle_address_sent(ethPluginProvideParameter_t *msg, lido_parameters_t *context) {
