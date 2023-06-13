@@ -31,6 +31,7 @@ void handle_finalize(void *parameters) {
             default:
                 break;
         }
+
         msg->uiType = ETH_UI_TYPE_GENERIC;
         msg->result = ETH_PLUGIN_RESULT_OK;
     } else {
