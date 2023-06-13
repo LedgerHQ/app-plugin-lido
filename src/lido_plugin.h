@@ -14,14 +14,6 @@
 #define STETH_TICKER  "stETH"
 #define WSTETH_TICKER "wstETH"
 
-#define TOKEN_SENT_FOUND 1  // REMOVE IF NOT USED
-
-// Number of decimals used when the token wasn't found in the CAL.
-#define DEFAULT_DECIMAL WEI_TO_ETHER
-
-// Ticker used when the token wasn't found in the CAL.
-#define DEFAULT_TICKER ""
-
 typedef enum {
     SUBMIT,
     WRAP,
@@ -55,20 +47,17 @@ typedef struct lido_parameters_t {
     uint8_t amount_sent[INT256_LENGTH];
     uint8_t amount_sent_two[INT256_LENGTH];
     uint8_t address_sent[ADDRESS_LENGTH];
-    char ticker_sent[MAX_TICKER_LEN];
-    // 2 * 32 + 20 + 11 = 95
+    // 2 * 32 + 20 = 84
     uint16_t offset;
     uint16_t checkpoint;
     uint16_t amount_length;
     // 3 * 4 = 12
-    uint8_t tokens_found;
-    uint8_t decimals_sent;
     uint8_t skip;
     uint8_t next_param;
     uint8_t selectorIndex;
     uint8_t valid;
-    // 7 * 1 = 7
-    // 95 + 12 + 7 = 114 --- MAX is 160 (5 * 32)
+    // 4 * 1 = 4
+    // 84 + 12 + 4 = 100 --- MAX is 160 (5 * 32)
 } lido_parameters_t;
 
 _Static_assert(sizeof(lido_parameters_t) <= 5 * 32, "Structure of parameters too big.");

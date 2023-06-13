@@ -32,8 +32,6 @@ void handle_finalize(void *parameters) {
                 break;
         }
 
-        msg->tokenLookup1 = context->token_received;
-
         msg->uiType = ETH_UI_TYPE_GENERIC;
         msg->result = ETH_PLUGIN_RESULT_OK;
     } else {
