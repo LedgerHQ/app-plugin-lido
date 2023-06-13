@@ -56,7 +56,10 @@ static void set_send_ui(ethQueryContractUI_t *msg, lido_parameters_t *context) {
                                   msg->msg,
                                   msg->msgLength);
         case CLAIM_WITHDRAWALS:
-            if (!uint256_to_decimal(context->amount_sent, INT256_LENGTH, msg->msg, msg->msgLength)) {
+            if (!uint256_to_decimal(context->amount_sent,
+                                    INT256_LENGTH,
+                                    msg->msg,
+                                    msg->msgLength)) {
                 msg->result = ETH_PLUGIN_RESULT_ERROR;
                 break;
             };
@@ -89,7 +92,10 @@ static void set_send_ui_two(ethQueryContractUI_t *msg, lido_parameters_t *contex
 
     switch (context->selectorIndex) {
         case CLAIM_WITHDRAWALS:
-            if (!uint256_to_decimal(context->amount_sent_two, INT256_LENGTH, msg->msg, msg->msgLength)) {
+            if (!uint256_to_decimal(context->amount_sent_two,
+                                    INT256_LENGTH
+                                    msg->msg,
+                                    msg->msgLength)) {
                 msg->result = ETH_PLUGIN_RESULT_ERROR;
                 break;
             };
