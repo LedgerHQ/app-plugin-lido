@@ -75,6 +75,6 @@ static inline void printf_hex_array(const char *title __attribute__((unused)),
     PRINTF(title);
     for (size_t i = 0; i < len; ++i) {
         PRINTF("%02x", data[i]);
-    };
+    }
     PRINTF("\n");
 }

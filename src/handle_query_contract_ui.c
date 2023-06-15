@@ -61,8 +61,7 @@ static void set_send_ui(ethQueryContractUI_t *msg, lido_parameters_t *context) {
                                     msg->msg,
                                     msg->msgLength)) {
                 msg->result = ETH_PLUGIN_RESULT_ERROR;
-                break;
-            };
+            }
             break;
         default:
             break;
@@ -97,8 +96,7 @@ static void set_send_ui_two(ethQueryContractUI_t *msg, lido_parameters_t *contex
                                     msg->msg,
                                     msg->msgLength)) {
                 msg->result = ETH_PLUGIN_RESULT_ERROR;
-                break;
-            };
+            }
             break;
         case REQUEST_WITHDRAWALS:
         case REQUEST_WITHDRAWALS_WSTETH:
