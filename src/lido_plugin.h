@@ -9,7 +9,7 @@
 
 #define NUM_LIDO_SELECTORS 8
 
-#define PLUGIN_NAME "lido"
+#define PLUGIN_NAME "Lido"
 
 #define STETH_TICKER  "stETH"
 #define WSTETH_TICKER "wstETH"

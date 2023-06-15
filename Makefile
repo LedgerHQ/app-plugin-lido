@@ -29,7 +29,7 @@ APPVERSION_N     = 1
 APPVERSION_P     = 1
 APPVERSION       = "$(APPVERSION_M).$(APPVERSION_N).$(APPVERSION_P)"
 
-APPNAME = "lido"
+APPNAME = "Lido"
 
 #prepare hsm generation
 ifeq ($(TARGET_NAME), TARGET_NANOS)

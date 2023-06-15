@@ -8,7 +8,7 @@
         "0xa1903eab": {
           "erc20OfInterest": [],
           "method": "submit",
-          "plugin": "lido"
+          "plugin": "Lido"
         }
       }
     },
@@ -19,15 +19,15 @@
         "0xde0e9a3e": {
           "erc20OfInterest": [],
           "method": "unwrap",
-          "plugin": "lido"
+          "plugin": "Lido"
         },
         "0xea598cb0": {
           "erc20OfInterest": [],
           "method": "wrap",
-          "plugin": "lido"
+          "plugin": "Lido"
         }
       }
     }
   ],
-  "name": "lido"
+  "name": "Lido"
 }
