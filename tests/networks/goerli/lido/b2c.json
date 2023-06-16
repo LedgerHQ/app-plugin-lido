@@ -1,0 +1,37 @@
+{
+  "chainId": 1,
+  "contracts": [
+    {
+      "address": "0xcf117961421ca9e546cd7f50bc73abcdb3039533",
+      "contractName": "OssifiableProxy",
+      "selectors": {
+        "0xacf41e4d": {
+          "erc20OfInterest": [],
+          "method": "requestWithdrawalsWithPermit",
+          "plugin": "Lido"
+        },
+        "0x7951b76f": {
+          "erc20OfInterest": [],
+          "method": "requestWithdrawalsWstETHWithPermit",
+          "plugin": "Lido"
+        },
+        "0xe3afe0a3": {
+          "erc20OfInterest": [],
+          "method": "claimWithdrawals",
+          "plugin": "Lido"
+        },
+        "0xd6681042": {
+          "erc20OfInterest": [],
+          "method": "requestWithdrawals",
+          "plugin": "Lido"
+        },
+        "0x19aa6257": {
+          "erc20OfInterest": [],
+          "method": "requestWithdrawalsWstETH",
+          "plugin": "Lido"
+        }
+      }
+    }
+  ],
+  "name": "Lido"
+}

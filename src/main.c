@@ -15,28 +15,20 @@
  *  limitations under the License.
  ********************************************************************************/
 
+#include <stdbool.h>
+#include <stdint.h>
+#include <string.h>
+
 #include "os.h"
+#include "cx.h"
+
+#include "glyphs.h"
+
 #include "lido_plugin.h"
 #include "glyphs.h"
 
-// Lido contract
-// function submit(address _referral) returns (uint256)
-static const uint8_t LIDO_SUBMIT_SELECTOR[SELECTOR_SIZE] = {0xa1, 0x90, 0x3e, 0xab};
-
-// wstETH contract
-// function wrap(uint256 _stETHAmount) returns (uint256)
-static const uint8_t LIDO_WRAP_STETH_SELECTOR[SELECTOR_SIZE] = {0xea, 0x59, 0x8c, 0xb0};
-// function unwrap(uint256 _wstETHAmount) returns (uint256)
-static const uint8_t LIDO_UNWRAP_WSTETH_SELECTOR[SELECTOR_SIZE] = {0xde, 0x0e, 0x9a, 0x3e};
-
-// Array of all the different lido selectors.
-const uint8_t *const LIDO_SELECTORS[NUM_LIDO_SELECTORS] = {
-    LIDO_SUBMIT_SELECTOR,
-    LIDO_WRAP_STETH_SELECTOR,
-    LIDO_UNWRAP_WSTETH_SELECTOR,
-};
-
 void dispatch_plugin_calls(int message, void *parameters) {
+    PRINTF("Handling message %d\n", message);
     switch (message) {
         case ETH_PLUGIN_INIT_CONTRACT:
             handle_init_contract(parameters);
@@ -115,15 +107,16 @@ __attribute__((section(".boot"))) int main(int arg0) {
             } else {
                 // regular call from ethereum
                 unsigned int *args = (unsigned int *) arg0;
-
                 if (args[0] != ETH_PLUGIN_CHECK_PRESENCE) {
                     dispatch_plugin_calls(args[0], (void *) args[1]);
                 }
+                os_lib_end();
             }
         }
         CATCH_OTHER(e) {
             switch (e) {
                 // These exceptions are only generated on handle_query_contract_ui()
+                // fall through
                 case 0x6502:
                 case EXCEPTION_OVERFLOW:
                     handle_query_ui_exception((unsigned int *) arg0);
@@ -134,6 +127,7 @@ __attribute__((section(".boot"))) int main(int arg0) {
             PRINTF("Exception 0x%x caught\n", e);
         }
         FINALLY {
+            // Call `os_lib_end`, go back to the ethereum app.
             os_lib_end();
         }
     }

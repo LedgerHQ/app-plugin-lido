@@ -16,10 +16,25 @@ void handle_query_contract_id(void *parameters) {
         case UNWRAP:
             strlcpy(msg->version, "Unwrap", msg->versionLength);
             break;
+        case REQUEST_WITHDRAWALS_WITH_PERMIT:
+            strlcpy(msg->version, "Request withdrawals with permit", msg->versionLength);
+            break;
+        case REQUEST_WITHDRAWALS_WSTETH_WITH_PERMIT:
+            strlcpy(msg->version, "Request withdrawals wstETH with permit", msg->versionLength);
+            break;
+        case CLAIM_WITHDRAWALS:
+            strlcpy(msg->version, "Claim withdrawals", msg->versionLength);
+            break;
+        case REQUEST_WITHDRAWALS:
+            strlcpy(msg->version, "Request withdrawals", msg->versionLength);
+            break;
+        case REQUEST_WITHDRAWALS_WSTETH:
+            strlcpy(msg->version, "Request withdrawals wstETH", msg->versionLength);
+            break;
         default:
             PRINTF("Selector Index :%d not supported\n", context->selectorIndex);
             msg->result = ETH_PLUGIN_RESULT_ERROR;
-            return;
+            break;
     }
 
     msg->result = ETH_PLUGIN_RESULT_OK;
