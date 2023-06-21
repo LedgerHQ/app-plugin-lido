@@ -24,6 +24,12 @@ void handle_init_contract(void *parameters) {
         }
     }
 
+    if (context->selectorIndex == NUM_LIDO_SELECTORS) {
+        msg->result = ETH_PLUGIN_RESULT_ERROR;
+        return;
+    }
+
+    context->valid = 0;  // init on false for security
     // Set `next_param` to be the first field we expect to parse.
     switch (context->selectorIndex) {
         case SUBMIT:
@@ -33,12 +39,21 @@ void handle_init_contract(void *parameters) {
         case WRAP:
             context->next_param = AMOUNT_SENT;
             break;
+        case REQUEST_WITHDRAWALS_WITH_PERMIT:
+        case REQUEST_WITHDRAWALS_WSTETH_WITH_PERMIT:
+        case REQUEST_WITHDRAWALS:
+        case REQUEST_WITHDRAWALS_WSTETH:
+            context->skip = 1;  // skip offset
+            context->next_param = ADDRESS_SENT;
+            break;
+        case CLAIM_WITHDRAWALS:
+            context->skip = 2;  // skip offset
+            context->next_param = AMOUNT_LENGTH;
+            break;
         default:
             PRINTF("Missing selectorIndex\n");
             msg->result = ETH_PLUGIN_RESULT_ERROR;
-            return;
+            break;
     }
-
-    context->valid = true;
     msg->result = ETH_PLUGIN_RESULT_OK;
 }

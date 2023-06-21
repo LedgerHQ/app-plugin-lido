@@ -2,9 +2,11 @@
 src/glyphs.c
 src/glyphs.h
 bin/
+build/
 debug/
 dep/
 obj/
+scan-build
 
 # Editors
 .idea/
@@ -19,6 +21,8 @@ __pycache__/
 .python-version
 
 # JS
+tests/elfs
 tests/node_modules
 tests/lib
 tests/snapshots/tmp
+tests/snapshots-tmp

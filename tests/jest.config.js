@@ -3,7 +3,6 @@
 
 module.exports = {
   modulePaths: ["<rootDir>/src", "<rootDir>/tests"],
-
   moduleNameMapper: {
     "^jest$": "<rootDir>/jest.js",
   },
@@ -25,15 +24,8 @@ module.exports = {
   testEnvironment: "node",
 
   // The glob patterns Jest uses to detect test files
-  testMatch: [
-    "**/__tests__/**/*.[jt]s?(x)",
-    "**/?(*.)+(spec|test).[tj]s?(x)",
-    "**/?(*.)+(ispec|test).[tj]s?(x)",
-  ],
+  testMatch: ["**/__tests__/**/*.[jt]s?(x)", "**/?(*.)+(spec|test).[tj]s?(x)", "**/?(*.)+(ispec|test).[tj]s?(x)"],
 
-  // Path of the file where tests can be """decorated"""
-  setupFilesAfterEnv: ['<rootDir>/setupTests.js'],
-
-  // Stop immediatly when a test fail
+  // Stop immediatly when a test fails
   bail: true,
 };
