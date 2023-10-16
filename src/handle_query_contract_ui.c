@@ -1,8 +1,10 @@
+#include <stdbool.h>
 #include "lido_plugin.h"
 
 // Set UI for the "Send" screen.
-static void set_send_ui(ethQueryContractUI_t *msg, lido_parameters_t *context) {
+static bool set_send_ui(ethQueryContractUI_t *msg, lido_parameters_t *context) {
     const char *ticker = "ETH";
+    bool ret = false;
 
     switch (context->selectorIndex) {
         case SUBMIT:
@@ -31,45 +33,43 @@ static void set_send_ui(ethQueryContractUI_t *msg, lido_parameters_t *context) {
             break;
         default:
             PRINTF("Unhandled selector Index: %d\n", context->selectorIndex);
-            msg->result = ETH_PLUGIN_RESULT_ERROR;
             break;
     }
 
     switch (context->selectorIndex) {
         case SUBMIT:
-            return amountToString(msg->pluginSharedRO->txContent->value.value,
-                                  msg->pluginSharedRO->txContent->value.length,
-                                  WEI_TO_ETHER,
-                                  ticker,
-                                  msg->msg,
-                                  msg->msgLength);
+            ret = amountToString(msg->pluginSharedRO->txContent->value.value,
+                                 msg->pluginSharedRO->txContent->value.length,
+                                 WEI_TO_ETHER,
+                                 ticker,
+                                 msg->msg,
+                                 msg->msgLength);
+            break;
         case UNWRAP:
         case WRAP:
         case REQUEST_WITHDRAWALS_WITH_PERMIT:
         case REQUEST_WITHDRAWALS_WSTETH_WITH_PERMIT:
         case REQUEST_WITHDRAWALS:
         case REQUEST_WITHDRAWALS_WSTETH:
-            return amountToString(context->amount_sent,
-                                  INT256_LENGTH,
-                                  WEI_TO_ETHER,
-                                  ticker,
-                                  msg->msg,
-                                  msg->msgLength);
+            ret = amountToString(context->amount_sent,
+                                 INT256_LENGTH,
+                                 WEI_TO_ETHER,
+                                 ticker,
+                                 msg->msg,
+                                 msg->msgLength);
+            break;
         case CLAIM_WITHDRAWALS:
-            if (!uint256_to_decimal(context->amount_sent,
-                                    INT256_LENGTH,
-                                    msg->msg,
-                                    msg->msgLength)) {
-                msg->result = ETH_PLUGIN_RESULT_ERROR;
-            }
+            ret = uint256_to_decimal(context->amount_sent, INT256_LENGTH, msg->msg, msg->msgLength);
             break;
         default:
             break;
     }
+    return ret;
 }
 
-static void set_send_ui_two(ethQueryContractUI_t *msg, lido_parameters_t *context) {
+static bool set_send_ui_two(ethQueryContractUI_t *msg, lido_parameters_t *context) {
     const char *ticker = "ETH";
+    bool ret = false;
 
     switch (context->selectorIndex) {
         case CLAIM_WITHDRAWALS:
@@ -85,34 +85,33 @@ static void set_send_ui_two(ethQueryContractUI_t *msg, lido_parameters_t *contex
             break;
         default:
             PRINTF("Unhandled selector Index: %d\n", context->selectorIndex);
-            msg->result = ETH_PLUGIN_RESULT_ERROR;
             break;
     }
 
     switch (context->selectorIndex) {
         case CLAIM_WITHDRAWALS:
-            if (!uint256_to_decimal(context->amount_sent_two,
-                                    INT256_LENGTH,
-                                    msg->msg,
-                                    msg->msgLength)) {
-                msg->result = ETH_PLUGIN_RESULT_ERROR;
-            }
+            ret = uint256_to_decimal(context->amount_sent_two,
+                                     INT256_LENGTH,
+                                     msg->msg,
+                                     msg->msgLength);
             break;
         case REQUEST_WITHDRAWALS:
         case REQUEST_WITHDRAWALS_WSTETH:
-            return amountToString(context->amount_sent_two,
-                                  INT256_LENGTH,
-                                  WEI_TO_ETHER,
-                                  ticker,
-                                  msg->msg,
-                                  msg->msgLength);
+            ret = amountToString(context->amount_sent_two,
+                                 INT256_LENGTH,
+                                 WEI_TO_ETHER,
+                                 ticker,
+                                 msg->msg,
+                                 msg->msgLength);
+            break;
         default:
             break;
     }
+    return ret;
 }
 
 // Set UI for the "Address" screen.
-static void set_address_ui(ethQueryContractUI_t *msg, lido_parameters_t *context) {
+static bool set_address_ui(ethQueryContractUI_t *msg, lido_parameters_t *context) {
     switch (context->selectorIndex) {
         case REQUEST_WITHDRAWALS_WITH_PERMIT:
         case REQUEST_WITHDRAWALS_WSTETH_WITH_PERMIT:
@@ -122,16 +121,15 @@ static void set_address_ui(ethQueryContractUI_t *msg, lido_parameters_t *context
             break;
         default:
             PRINTF("Unhandled selector Index: %d\n", context->selectorIndex);
-            msg->result = ETH_PLUGIN_RESULT_ERROR;
-            break;
+            return false;
     }
 
     msg->msg[0] = '0';
     msg->msg[1] = 'x';
-    getEthAddressStringFromBinary((uint8_t *) context->address_sent,
-                                  msg->msg + 2,
-                                  msg->pluginSharedRW->sha3,
-                                  0);
+    return getEthAddressStringFromBinary((uint8_t *) context->address_sent,
+                                         msg->msg + 2,
+                                         msg->pluginSharedRW->sha3,
+                                         0);
 }
 
 // Helper function that returns the enum corresponding to the screen that should be displayed.
@@ -188,28 +186,27 @@ static screens_t get_screen(ethQueryContractUI_t *msg, lido_parameters_t *contex
     return ERROR;
 }
 
-void handle_query_contract_ui(void *parameters) {
-    ethQueryContractUI_t *msg = (ethQueryContractUI_t *) parameters;
+void handle_query_contract_ui(ethQueryContractUI_t *msg) {
     lido_parameters_t *context = (lido_parameters_t *) msg->pluginContext;
+    bool ret = false;
 
     memset(msg->title, 0, msg->titleLength);
     memset(msg->msg, 0, msg->msgLength);
-    msg->result = ETH_PLUGIN_RESULT_OK;
 
     screens_t screen = get_screen(msg, context);
     switch (screen) {
         case SEND_SCREEN:
-            set_send_ui(msg, context);
+            ret = set_send_ui(msg, context);
             break;
         case SEND_SCREEN_TWO:
-            set_send_ui_two(msg, context);
+            ret = set_send_ui_two(msg, context);
             break;
         case ADDRESS_SCREEN:
-            set_address_ui(msg, context);
+            ret = set_address_ui(msg, context);
             break;
         default:
             PRINTF("Received an invalid screenIndex %d\n", screen);
-            msg->result = ETH_PLUGIN_RESULT_ERROR;
             break;
     }
+    msg->result = ret ? ETH_PLUGIN_RESULT_OK : ETH_PLUGIN_RESULT_ERROR;
 }

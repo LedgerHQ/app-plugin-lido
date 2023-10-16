@@ -128,8 +128,7 @@ static void handle_claim_withdrawals(ethPluginProvideParameter_t *msg, lido_para
     }
 }
 
-void handle_provide_parameter(void *parameters) {
-    ethPluginProvideParameter_t *msg = (ethPluginProvideParameter_t *) parameters;
+void handle_provide_parameter(ethPluginProvideParameter_t *msg) {
     lido_parameters_t *context = (lido_parameters_t *) msg->pluginContext;
     PRINTF("plugin provide parameter %d %.*H\n",
            msg->parameterOffset,
