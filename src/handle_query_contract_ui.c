@@ -126,9 +126,7 @@ static bool set_address_ui(ethQueryContractUI_t *msg, lido_parameters_t *context
 
     msg->msg[0] = '0';
     msg->msg[1] = 'x';
-    return getEthAddressStringFromBinary((uint8_t *) context->address_sent,
-                                         msg->msg + 2,
-                                         0);
+    return getEthAddressStringFromBinary((uint8_t *) context->address_sent, msg->msg + 2, 0);
 }
 
 // Helper function that returns the enum corresponding to the screen that should be displayed.
