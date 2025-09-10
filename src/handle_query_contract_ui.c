@@ -38,8 +38,8 @@ static bool set_send_ui(ethQueryContractUI_t *msg, lido_parameters_t *context) {
 
     switch (context->selectorIndex) {
         case SUBMIT:
-            ret = amountToString(msg->pluginSharedRO->txContent->value.value,
-                                 msg->pluginSharedRO->txContent->value.length,
+            ret = amountToString(msg->txContent->value.value,
+                                 msg->txContent->value.length,
                                  WEI_TO_ETHER,
                                  ticker,
                                  msg->msg,
