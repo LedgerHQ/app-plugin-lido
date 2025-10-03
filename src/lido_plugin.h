@@ -60,7 +60,9 @@ typedef struct lido_parameters_t {
     // 84 + 12 + 4 = 100 --- MAX is 160 (5 * 32)
 } lido_parameters_t;
 
-_Static_assert(sizeof(lido_parameters_t) <= 5 * 32, "Structure of parameters too big.");
+// Check that the plugin context structure will fit in the ethereum allocated memory.
+// for us Do not remove!
+ASSERT_SIZEOF_PLUGIN_CONTEXT(lido_parameters_t);
 
 static inline void printf_hex_array(const char *title __attribute__((unused)),
                                     size_t len __attribute__((unused)),
